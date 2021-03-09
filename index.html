@@ -1,15 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>AI Maze Solver</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+<!--    Bootstrap   -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!--    Custom JS   -->
+    <script type="text/javascript" src="maze/constants.js"></script>
     <script type="text/javascript" src="algorithms/A_star.js"></script>
     <script type="text/javascript" src="algorithms/BFS.js"></script>
     <script type="text/javascript" src="algorithms/Bidirectional.js"></script>
     <script type="text/javascript" src="algorithms/DFS.js"></script>
     <script type="text/javascript" src="algorithms/Dijkstra.js"></script>
+    <script type="text/javascript" src="maze/maze.js"></script>
+    <script type="text/javascript" src="maze/index.js"></script>
 </head>
 <body>
 
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Column 1</h3>
+
+        </div>
+        <div class="col-sm-4">
+            <h3>Column 2</h3>
+
+        </div>
+        <div class="col-sm-4">
+            <h3>Column 3</h3>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Column 1</h3>
+
+        </div>
+        <div class="col-sm-4">
+            <h3>Column 2</h3>
+            Hi this is deepak.
+            <button onclick="test(true)">Test</button>
+        </div>
+        <div class="col-sm-4">
+            <h3>Column 3</h3>
+
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

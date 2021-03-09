@@ -1,0 +1,5 @@
+class Dijkstra {
+    constructor() {
+
+    }
+}
