@@ -191,7 +191,7 @@ class Maze {
         this.createTable();
     }
 
-    drawPath() {
+    getPath() {
         let destinations = Array.from(this.getDestinationCells());
         let destination = null;
         destinations.some(function (element, index) {
@@ -208,10 +208,7 @@ class Maze {
             pathCell = pathCell.heuristics.parent;
         }
         path.reverse();
-        path.forEach((element) => {
-            this.setCellState(element, PATH);
-        });
+        return path;
     }
-
 }
 

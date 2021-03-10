@@ -1,5 +1,8 @@
 // write js code to run different algorithms call methods of algorithms and maze class.
 // write js methods to take input from user about size of maze etc. and generate maze by calling maze class methods
+function sleep (milliSeconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliSeconds));
+}
 
 let maze1, maze2;
 let dijkstra;
@@ -16,7 +19,7 @@ function generateMaze() {
     maze1.setCellState(maze1.maze[maze1.rows-1][maze1.cols-1], DESTINATION);
 }
 
-function visualize() {
+async function visualize() {
     // get the name of algorithms from drop down
 
     // initialize algorithm
@@ -26,10 +29,18 @@ function visualize() {
     let reachable = true;
     while (maze1.getIsSearching() === true && reachable === true) {
         reachable = dijkstra.runStep(maze1);
+        await sleep(50);
     }
-    if (reachable === true)
-        maze1.drawPath();
-    // else alert("Destination unreachable");
+    if (reachable === true) {
+        let path = maze1.getPath();
+        for (const element of path) {
+            maze1.setCellState(element, PATH);
+            await sleep(50);
+        }
+    } else {
+        // inform that no path can be found.
+        // alert("Destination unreachable");
+    }
 }
 
 
