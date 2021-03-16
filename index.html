@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="./maze/index.css"  />
 <!--    Custom JS   -->
     <script type="text/javascript" src="maze/constants.js"></script>
-    <script type="text/javascript" src="algorithms/A_star.js"></script>
+    <script type="text/javascript" src="algorithms/AStar.js"></script>
     <script type="text/javascript" src="algorithms/BFS.js"></script>
     <script type="text/javascript" src="algorithms/Bidirectional.js"></script>
     <script type="text/javascript" src="algorithms/DFS.js"></script>
@@ -23,30 +23,31 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-sm-10">
-            <h3>Maze 1</h3>
-            <div id="maze1"></div>
-
+        <div class="col-2">
         </div>
-        <div class="col-sm-2">
-            <h3>Statistics</h3>
-
+        <div class="col-10">
+            <span>Control</span>
+            <button onclick="Test();">Test</button>
+            <button onclick="generateMaze();">Generate Maze</button>
+            <button onclick="visualize();">Visualize</button>
+            <input type="radio" id='one' name="mazeCount" value="one" checked onclick="createMaze('one');">
+            <label for="one">Single Maze</label>
+            <input type="radio" id='two' name="mazeCount" value="two" onclick="createMaze('two');">
+            <label for="two">Double Maze</label>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-10">
-            <h3>Maze 2</h3>
-            <div id="maze2"></div>
+        <div class="col-6">
+            <span>Maze 1</span>
+            <div id="maze1"></div>
 
         </div>
-        <div class="col-sm-2">
-            <h3>Control</h3>
-            Hi there!<br>
-            <button onclick="Test()">Test</button>
-            <button onclick="generateMaze()">Generate Maze</button>
-            <button onclick="visualize()">Visualize</button>
+        <div class="col-6">
+
+            <span>Maze 2</span>
+            <div id="maze2"></div>
         </div>
     </div>
 

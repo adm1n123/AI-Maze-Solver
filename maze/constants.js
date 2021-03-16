@@ -12,6 +12,13 @@ const NEW = 7        // cell is not reached
 const OPEN = 8;      // cell is reached but not closed
 const CLOSED = 9;    // cell is processed
 
+// Algorithm names
+const ASTAR_ALGO = 'A*';
+const BFS_ALGO = 'BFS';
+const DFS_ALGO = 'DFS';
+const BIDIRECTIONAL_ALGO = 'Bidirectional';
+const DIJKSTRA_ALGO = 'Dijkstra';
+
 // CSS classes
 const EMPTY_CLASS = 'empty';
 const WALL_CLASS = 'wall';

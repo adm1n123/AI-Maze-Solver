@@ -1,0 +1,7 @@
+class Bidirectional {
+    constructor(mazeObject) {
+        
+    }
+
+
+}

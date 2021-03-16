@@ -8,7 +8,7 @@
 .empty {
     animation-name: moveInLeft;
     animation-duration: 0.4s;
-    background-color: rgb(204, 197, 197);
+    background-color: rgb(255, 255, 255);
     border: none;
 }
 .source {
@@ -82,8 +82,8 @@ html {
 /* VISUALIZER Maze SETUP */
 /*-------------------------------------------------------*/
 td {
-    min-width: 30px;
-    height: 30px;
+    min-width: 20px;
+    height: 20px;
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
     background-color: white;

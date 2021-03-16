@@ -1,0 +1,7 @@
+class DFS {
+    constructor(mazeObject) {
+        
+    }
+
+
+}

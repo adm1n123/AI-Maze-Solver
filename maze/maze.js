@@ -54,6 +54,11 @@ class Maze {
             }
         }
     }
+    setSourceCell(source) {
+        // set source cell.
+        this.maze[source.row][source.col].state = SOURCE;
+        this.setCellState(this.maze[source.row][source.col], SOURCE);
+    }
 
     isSourceCell(cell) {
         return cell.state === SOURCE;
@@ -78,6 +83,14 @@ class Maze {
             }
         }
         return destinations;
+    }
+    setDestinationCells(destinationList) {
+        // set list of destination cells
+        let array = Array.from(destinationList);
+        array.forEach((destination) => {
+            this.maze[destination.row][destination.col].state = DESTINATION;
+            this.setCellState(this.maze[destination.row][destination.col], DESTINATION);
+        });
     }
 
     clearDestinationCells() {
@@ -119,25 +132,36 @@ class Maze {
     generateWalls() {
         // generate walls randomly at any cell used when user click to generate maze.
         let walls = 0;
-        let self = this;
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if(Math.random() < .28) {
                     walls += 1;
-                    self.setCellState(this.maze[row][col], WALL);
-                    // setTimeout(function () {
-                    //
-                    // }, walls * 3);
+                    this.setCellState(this.maze[row][col], WALL);
+                } else {
+                    this.setCellState(this.maze[row][col], EMPTY);
                 }
             }
         }
     }
 
-    clearMaze() {
-        // clear entire maze set each cell to EMPTY except source destination.
+    cleanMaze() {
+        // clear entire maze set each cell to EMPTY except source destinations.
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if (this.maze[row][col].state !== SOURCE && this.maze[row][col].state !== DESTINATION) {
+                    this.setCellState(this.maze[row][col], EMPTY);
+                }
+            }
+        }
+    }
+
+    resetMaze() {
+        // clear entire maze set each cell to EMPTY except source destination and wall.
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state !== SOURCE &&
+                    this.maze[row][col].state !== DESTINATION &&
+                    this.maze[row][col].state !== WALL) {
                     this.setCellState(this.maze[row][col], EMPTY);
                 }
             }
@@ -176,7 +200,7 @@ class Maze {
         mazeDiv.appendChild(table);
     }
 
-    createMaze() {
+    createMaze() {  // creates the empty maze.
         for (let row = 0; row < this.rows; row += 1) {
             this.maze[row] = [];
             for (let col = 0; col < this.cols; col += 1) {
@@ -189,6 +213,16 @@ class Maze {
             }
         }
         this.createTable();
+    }
+
+    copyMaze(newMaze) {
+        newMaze.createMaze();
+
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                newMaze.setCellState(newMaze.maze[row][col], this.maze[row][col].state);
+            }
+        }
     }
 
     getPath() {

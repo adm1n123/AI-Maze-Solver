@@ -1,6 +1,6 @@
-class BFS {
+class AStar {
     constructor(mazeObject) {
-        
+
     }
 
 
