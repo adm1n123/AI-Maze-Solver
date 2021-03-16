@@ -24,11 +24,14 @@ class Dijkstra {
             let current = this.minCostCell();
             this.openSet.delete(current);
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
+            this.closedSet.add(current);
 
+            if (current.state === DESTINATION) {    // unexpected event just return.
+                mazeObject.setIsSearching(false);
+                return true;
+            }
             if (current.state !== SOURCE)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
-
-            this.closedSet.add(current);
 
             let neighbors = this.getUnvisitedNeighbours(current, mazeObject);
             let self = this;

@@ -18,7 +18,7 @@ class UserConfig {
             object: null
         }
         this.maze2Algo = {
-            name: DIJKSTRA_ALGO,
+            name: ASTAR_ALGO,
             object: null
         }
 
@@ -109,25 +109,98 @@ function createMaze(count) {
         userConfig.removeMaze2();
         userConfig.maze1.resetMaze();
         userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.maze1.setIsSearching(false);
     } else {
         userConfig.maze1.resetMaze();
         userConfig.initAlgoObject(userConfig.maze1);
         userConfig.generateMaze2();
         userConfig.initAlgoObject(userConfig.maze2);
+        userConfig.maze1.setIsSearching(false);
+        userConfig.maze2.setIsSearching(false);
     }
+    setVisualizeButton();
 }
 
 function generateMaze() {
-
     if (userConfig.maze2 !== null) {    // maze2 is present.
         userConfig.generateMaze1();
         userConfig.generateMaze2();
     } else {
         userConfig.generateMaze1();
     }
+    setVisualizeButton();
 }
+
+function resetMaze() {
+    if (userConfig.maze2 !== null) {    // maze2 is present.
+        userConfig.maze1.resetMaze();
+        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.maze2.resetMaze();
+        userConfig.initAlgoObject(userConfig.maze2);
+        // stop the while loop
+        userConfig.maze1.setIsSearching(false);
+        userConfig.maze2.setIsSearching(false);
+    } else {
+        userConfig.maze1.resetMaze();
+        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.maze1.setIsSearching(false);
+    }
+    setVisualizeButton();
+}
+
+function cleanMaze() {
+    if (userConfig.maze2 !== null) {    // maze2 is present.
+        userConfig.maze1.cleanMaze();
+        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.maze2.cleanMaze();
+        userConfig.initAlgoObject(userConfig.maze2);
+        userConfig.maze1.setIsSearching(false);
+        userConfig.maze2.setIsSearching(false);
+    } else {
+        userConfig.maze1.cleanMaze();
+        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.maze1.setIsSearching(false);
+    }
+    setVisualizeButton();
+}
+
+function setVisualizeButton() {
+    let visualizeButton = document.getElementById("visualizeButton");
+    visualizeButton.innerHTML = "Visualize";
+}
+function setPauseButton() {
+    let visualizeButton = document.getElementById("visualizeButton");
+    visualizeButton.innerHTML = "Pause";
+}
+
+function toggleVisualizeButton() {
+    let visualizeButton = document.getElementById("visualizeButton");
+    if (visualizeButton.innerHTML === "Visualize") visualizeButton.innerHTML = "Pause";
+    else visualizeButton.innerHTML = "Visualize";
+}
+
+function isPathDrawn() {
+    if (userConfig.maze1.isPathDrawn() === true) {   // pause button is pressed.
+        return true;
+    } else if(userConfig.maze2 !== null && userConfig.maze2.isPathDrawn() === true) {
+        return true;
+    }
+    return false;
+}
+
 // userConfig = new UserConfig();
 async function visualize() {
+    if (userConfig.maze1.getIsSearching() === true) {   // pause button is pressed.
+        userConfig.maze1.setIsSearching(false);
+        if (userConfig.maze2 !== null) {
+            userConfig.maze2.setIsSearching(false);
+        }
+        setVisualizeButton();
+        return;
+    }
+    if (isPathDrawn() === true) return;
+    setPauseButton();
+
     // get the name of algorithms from drop down
     // initialize algorithm
     if (userConfig.maze2 === null) {    // only maze1 is present.
@@ -160,25 +233,91 @@ async function visualize() {
             maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
             await sleep(50);
         }
-        if (maze1Reachable === true) {
+        if (maze1Reachable === true && userConfig.maze1.getIsSearching() === false) {
             let path = userConfig.maze1.getPath();
             for (const element of path) {
                 userConfig.maze1.setCellState(element, PATH);
                 await sleep(50);
             }
         }
-        if (maze2Reachable === true) {
-            let path = userConfig.maze1.getPath();
+        if (maze2Reachable === true && userConfig.maze2.getIsSearching() === false) {
+            let path = userConfig.maze2.getPath();
             for (const element of path) {
                 userConfig.maze2.setCellState(element, PATH);
                 await sleep(50);
             }
         }
-        if (maze1Reachable === false && maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
+        if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
             alert("Destination Unreachable !!!");
         }
+        userConfig.maze1.setIsSearching(false);
+        userConfig.maze2.setIsSearching(false);
+    }
+    setVisualizeButton();
+}
+
+async function oneStep() {
+    // run one step of algo.
+    // get the name of algorithms from drop down
+    // initialize algorithm
+    if (isPathDrawn() === true) return;
+    setVisualizeButton();
+
+    if (userConfig.maze1.getIsSearching() === true) {   // pause button is pressed.
+        userConfig.maze1.setIsSearching(false);
+        if (userConfig.maze2 !== null) {
+            userConfig.maze2.setIsSearching(false);
+        }
+        await sleep(100);   // wait when first time button is clicked. so that visualize() terminates
+    }
+
+    if (userConfig.maze2 === null) {    // only maze1 is present.
+        userConfig.maze1.setIsSearching(true);
+        // run algorithms
+
+        let reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+        await sleep(50);
+
+        if (reachable === true && userConfig.maze1.getIsSearching() === false) {
+            let path = userConfig.maze1.getPath();
+            for (const element of path) {
+                userConfig.maze1.setCellState(element, PATH);
+                await sleep(50);
+            }
+        } else if(reachable === false) {
+            alert("Destination Unreachable !!!");
+        }
+        userConfig.maze1.setIsSearching(false);
+    } else {    // both maze are present.
         userConfig.maze1.setIsSearching(true);
         userConfig.maze2.setIsSearching(true);
+        // run algorithms
+        let maze1Reachable = true;
+        let maze2Reachable = true;
+
+        maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+        maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
+        await sleep(50);
+
+        if (maze1Reachable === true && userConfig.maze1.getIsSearching() === false) {
+            let path = userConfig.maze1.getPath();
+            for (const element of path) {
+                userConfig.maze1.setCellState(element, PATH);
+                await sleep(50);
+            }
+        }
+        if (maze2Reachable === true && userConfig.maze2.getIsSearching() === false) {
+            let path = userConfig.maze2.getPath();
+            for (const element of path) {
+                userConfig.maze2.setCellState(element, PATH);
+                await sleep(50);
+            }
+        }
+        if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
+            alert("Destination Unreachable !!!");
+        }
+        userConfig.maze1.setIsSearching(false);
+        userConfig.maze2.setIsSearching(false);
     }
 }
 

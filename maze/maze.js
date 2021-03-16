@@ -244,5 +244,16 @@ class Maze {
         path.reverse();
         return path;
     }
+
+    isPathDrawn() {
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state === PATH) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 

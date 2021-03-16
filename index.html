@@ -28,10 +28,13 @@
         <div class="col-2">
         </div>
         <div class="col-10">
-            <span>Control</span>
-            <button onclick="Test();">Test</button>
-            <button onclick="generateMaze();">Generate Maze</button>
-            <button onclick="visualize();">Visualize</button>
+            <span>AI Maze Solver</span>
+            <!--<button onclick="Test();">Test</button>-->
+            <button class="btn btn-primary" onclick="generateMaze();">Generate Maze</button>
+            <button class="btn btn-primary" onclick="resetMaze();">Reset Maze</button>
+            <button class="btn btn-primary" onclick="cleanMaze();">Clean Maze</button>
+            <button id="visualizeButton" class="btn btn-primary" onclick="visualize();">Visualize</button>
+            <button class="btn btn-primary" onclick="oneStep();">One Step</button>
             <input type="radio" id='one' name="mazeCount" value="one" checked onclick="createMaze('one');">
             <label for="one">Single Maze</label>
             <input type="radio" id='two' name="mazeCount" value="two" onclick="createMaze('two');">
