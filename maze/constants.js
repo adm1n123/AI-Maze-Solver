@@ -13,11 +13,14 @@ const OPEN = 8;      // cell is reached but not closed
 const CLOSED = 9;    // cell is processed
 
 // Algorithm names
-const ASTAR_ALGO = 'A*';
+const ASTAR_M_ALGO = 'A*+M';    // Manhattan
+const ASTAR_E_ALGO = 'A*+E';    // Euclidean
+const ASTAR_D_ALGO = 'A*+D';    // Diagonal
 const BFS_ALGO = 'BFS';
 const DFS_ALGO = 'DFS';
 const BIDIRECTIONAL_ALGO = 'Bidirectional';
 const DIJKSTRA_ALGO = 'Dijkstra';
+const GBFS_ALGO = 'GBFS';
 
 // CSS classes
 const EMPTY_CLASS = 'empty';

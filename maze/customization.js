@@ -26,8 +26,6 @@ function mazeClick(e) {
 
 // ######################################### Context menu ##################################
 
-
-
 document.onclick = hideMenu;
 document.oncontextmenu = rightClick;
 
@@ -143,5 +141,50 @@ function setWall() {
         let cell = userConfig.maze2.maze[row][col];
         userConfig.maze2.setCellState(cell, WALL);
         userConfig.initAlgoObject(userConfig.maze2);
+    }
+}
+
+// #################################### Select algorithm ###################################
+function selectAlgo(maze, value) {
+    if (userConfig.isRunning === true) {    // user can only change cell if algorithm is not running.
+        if (maze === userConfig.maze1ID && userConfig.maze1 !== null) {
+            document.getElementById("selectMaze1").selectedIndex = 0;
+        } else if (maze === userConfig.maze2ID && userConfig.maze2 !== null) {
+            document.getElementById("selectMaze2").selectedIndex = 0;
+        }
+        alert("!!! Algorithm is running Reset maze before customizing !!!");
+        return;
+    }
+
+    let algoName = null;
+    if (value === 'A*+M') {
+        algoName = ASTAR_M_ALGO;
+    } else if (value === 'A*+E') {
+        algoName = ASTAR_E_ALGO;
+    } else if (value === 'A*+D') {
+        algoName = ASTAR_D_ALGO;
+    } else if (value === 'Dijkstra') {
+        algoName = DIJKSTRA_ALGO;
+    } else if (value === 'DFS') {
+        algoName = DFS_ALGO;
+    } else if (value === 'BFS') {
+        algoName = BFS_ALGO;
+    } else if (value === 'GBFS') {
+        algoName = GBFS_ALGO;
+    } else if (value === 'Bidirectional') {
+        algoName = BIDIRECTIONAL_ALGO;
+    } else {
+        return;
+    }
+
+    if (maze === userConfig.maze1ID && userConfig.maze1 !== null) {
+        userConfig.maze1Algo.name = algoName;
+        userConfig.initAlgoObject(userConfig.maze1);
+        // alert("maze1 algo:"+userConfig.maze1Algo.name);
+
+    } else if (maze === userConfig.maze2ID && userConfig.maze2 !== null) {
+        userConfig.maze2Algo.name = algoName;
+        userConfig.initAlgoObject(userConfig.maze2);
+        // alert("maze2 algo:"+userConfig.maze2Algo.name);
     }
 }

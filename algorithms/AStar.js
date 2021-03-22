@@ -1,9 +1,16 @@
 class AStar {
 
-    constructor(mazeObject) {
+    constructor(mazeObject, heuristic) {
         this.openSet = new Set();
         this.closedSet = new Set();
-        this.hFunction = new Manhattan();
+        if (heuristic === ASTAR_M_ALGO)
+            this.hFunction = new Manhattan();
+        else if (heuristic === ASTAR_E_ALGO)
+            this.hFunction = new Euclidean();
+        else if (heuristic === ASTAR_D_ALGO)
+            this.hFunction = new Diagonal();
+        else
+            alert("Error setting heuristic function");
 
         for (let row = 0; row < mazeObject.rows; row += 1) {
             for (let col = 0; col < mazeObject.cols; col += 1) {

@@ -18,6 +18,7 @@
     <script type="text/javascript" src="algorithms/Bidirectional.js"></script>
     <script type="text/javascript" src="algorithms/DFS.js"></script>
     <script type="text/javascript" src="algorithms/Dijkstra.js"></script>
+    <script type="text/javascript" src="algorithms/GBFS.js"></script>
     <script type="text/javascript" src="maze/maze.js"></script>
     <script type="text/javascript" src="maze/index.js"></script>
     <script type="text/javascript" src="maze/customization.js"></script>
@@ -26,20 +27,40 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2">
-        </div>
-        <div class="col-10">
+        <div class="col-12">
             <span>AI Maze Solver</span>
             <!--<button onclick="Test();">Test</button>-->
-            <button class="btn btn-primary" onclick="generateMaze();">Generate Maze</button>
-            <button class="btn btn-primary" onclick="resetMaze();">Reset Maze</button>
-            <button class="btn btn-primary" onclick="cleanMaze();">Clean Maze</button>
+            <button class="btn btn-primary" onclick="generateMaze();">Generate</button>
+            <button class="btn btn-primary" onclick="resetMaze();">Reset</button>
+            <button class="btn btn-primary" onclick="cleanMaze();">Clean</button>
             <button id="visualizeButton" class="btn btn-primary" onclick="visualize();">Visualize</button>
             <button class="btn btn-primary" onclick="oneStep();">One Step</button>
-            <input type="radio" id='one' name="mazeCount" value="one" checked onclick="createMaze('one');">
-            <label for="one">Single Maze</label>
-            <input type="radio" id='two' name="mazeCount" value="two" onclick="createMaze('two');">
-            <label for="two">Double Maze</label>
+            <button id="mazeCountButton" class="btn btn-primary" value="two" onclick="createMaze();">Double Maze</button>
+
+            <label for="selectMaze1">Maze1</label>
+            <select id ="selectMaze1" name="" onmousedown="this.value='';" onchange="selectAlgo('maze1', this.value);">
+                <option value=''>select algo</option>
+                <option value='A*+M'>A* Manhattan</option>
+                <option value='A*+E'>A* Euclidean</option>
+                <option value='A*+D'>A* Diagonal</option>
+                <option value='Dijkstra' selected>Dijkstra</option>
+                <option value='DFS'>DFS</option>
+                <option value='BFS'>BFS</option>
+                <option value='GBFS'>Greedy Best</option>
+                <option value='Bidirectional'>Bidirectional</option>
+            </select>
+            <label for="selectMaze2">Maze2</label>
+            <select id ="selectMaze2" name="" onmousedown="this.value='';" onchange="selectAlgo('maze2', this.value);">
+                <option value=''>select algo</option>
+                <option value='A*+M' selected>A* Manhattan</option>
+                <option value='A*+E'>A* Euclidean</option>
+                <option value='A*+D'>A* Diagonal</option>
+                <option value='Dijkstra'>Dijkstra</option>
+                <option value='DFS'>DFS</option>
+                <option value='BFS'>BFS</option>
+                <option value='GBFS'>Greedy Best</option>
+                <option value='Bidirectional'>Bidirectional</option>
+            </select>
         </div>
     </div>
     <div class="row">

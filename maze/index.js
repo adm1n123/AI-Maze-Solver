@@ -18,7 +18,7 @@ class UserConfig {
             object: null
         }
         this.maze2Algo = {
-            name: ASTAR_ALGO,
+            name: ASTAR_M_ALGO,
             object: null
         }
 
@@ -82,8 +82,12 @@ class UserConfig {
 
     getAlgoObject(algoName, mazeObject) {
         let algoObject = null;
-        if (algoName === ASTAR_ALGO) {
-            algoObject = new AStar(mazeObject);
+        if (algoName === ASTAR_M_ALGO) {
+            algoObject = new AStar(mazeObject, ASTAR_M_ALGO);
+        } else if (algoName === ASTAR_E_ALGO) {
+            algoObject = new AStar(mazeObject, ASTAR_E_ALGO);
+        } else if (algoName === ASTAR_D_ALGO) {
+            algoObject = new AStar(mazeObject, ASTAR_D_ALGO);
         } else if (algoName === BFS_ALGO) {
             algoObject = new BFS(mazeObject);
         } else if (algoName === DFS_ALGO) {
@@ -92,6 +96,8 @@ class UserConfig {
             algoObject = new Bidirectional(mazeObject);
         } else if (algoName === DIJKSTRA_ALGO) {
             algoObject = new Dijkstra(mazeObject);
+        } else if (algoName === GBFS_ALGO) {
+            algoObject = new GBFS(mazeObject);
         }
         return algoObject;
     }
@@ -126,12 +132,15 @@ function isSourceDestinationSet() {
     }
 }
 
-function createMaze(count) {
-    if (count === 'one') {
+function createMaze() {
+    let mazeCountButton = document.getElementById("mazeCountButton");
+    if (mazeCountButton.value === 'one') {
         userConfig.removeMaze2();
         userConfig.maze1.resetMaze();
         userConfig.initAlgoObject(userConfig.maze1);
         userConfig.maze1.setIsSearching(false);
+        mazeCountButton.innerHTML = 'Double Maze';
+        mazeCountButton.value = 'two';
     } else {
         userConfig.maze1.resetMaze();
         userConfig.initAlgoObject(userConfig.maze1);
@@ -139,6 +148,8 @@ function createMaze(count) {
         userConfig.initAlgoObject(userConfig.maze2);
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
+        mazeCountButton.innerHTML = 'Single Maze';
+        mazeCountButton.value = 'one';
     }
     setVisualizeButton();
     userConfig.isRunning = false;
