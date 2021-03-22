@@ -1,52 +1,9 @@
-class Euclidean {
-    hScore(cell) {
-        let array = Array.from(userConfig.destinationList);
-        let minH = Number.MAX_SAFE_INTEGER;
-
-        array.forEach((i) => {
-            let h = Math.sqrt(Math.pow(i.row - cell.row, 2) + Math.pow(i.col - cell.col, 2));
-            if (h < minH) {
-                minH = h;
-            }
-        });
-        return minH;
-    }
-}
-
-class Manhattan {
-    hScore(cell) {
-        let array = Array.from(userConfig.destinationList);
-        let minH = Number.MAX_SAFE_INTEGER;
-
-        array.forEach((i) => {
-            let h = Math.abs(i.row - cell.row) + Math.abs(i.col - cell.col);
-            if (h < minH) {
-                minH = h;
-            }
-        });
-        return minH;
-    }
-}
-class Diagonal {
-    hScore(cell) {
-        let array = Array.from(userConfig.destinationList);
-        let minH = Number.MAX_SAFE_INTEGER;
-
-        array.forEach((i) => {
-            let h = Math.max(Math.abs(i.row - cell.row), Math.abs(i.col - cell.col));
-            if (h < minH) {
-                minH = h;
-            }
-        });
-        return minH;
-    }
-}
 class AStar {
 
     constructor(mazeObject) {
         this.openSet = new Set();
         this.closedSet = new Set();
-        this.hFunction = new Euclidean();
+        this.hFunction = new Manhattan();
 
         for (let row = 0; row < mazeObject.rows; row += 1) {
             for (let col = 0; col < mazeObject.cols; col += 1) {
@@ -151,5 +108,50 @@ class AStar {
             }
         });
         return minCell;
+    }
+}
+
+// Heuristic distance
+class Euclidean {
+    hScore(cell) {
+        let array = Array.from(userConfig.destinationList);
+        let minH = Number.MAX_SAFE_INTEGER;
+
+        array.forEach((i) => {
+            let h = Math.sqrt(Math.pow(i.row - cell.row, 2) + Math.pow(i.col - cell.col, 2));
+            if (h < minH) {
+                minH = h;
+            }
+        });
+        return minH;
+    }
+}
+
+class Manhattan {
+    hScore(cell) {
+        let array = Array.from(userConfig.destinationList);
+        let minH = Number.MAX_SAFE_INTEGER;
+
+        array.forEach((i) => {
+            let h = Math.abs(i.row - cell.row) + Math.abs(i.col - cell.col);
+            if (h < minH) {
+                minH = h;
+            }
+        });
+        return minH;
+    }
+}
+class Diagonal {
+    hScore(cell) {
+        let array = Array.from(userConfig.destinationList);
+        let minH = Number.MAX_SAFE_INTEGER;
+
+        array.forEach((i) => {
+            let h = Math.max(Math.abs(i.row - cell.row), Math.abs(i.col - cell.col));
+            if (h < minH) {
+                minH = h;
+            }
+        });
+        return minH;
     }
 }

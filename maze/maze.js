@@ -129,6 +129,14 @@ class Maze {
         }
     }
 
+    flipCellState(cell) {   // flip emtpy to wall, and wall to empty.
+        if (cell.state === EMPTY)
+            this.setCellState(cell, WALL)
+        else
+            this.setCellState(cell, EMPTY)
+
+    }
+
     generateWalls() {
         // generate walls randomly at any cell used when user click to generate maze.
         let walls = 0;
@@ -198,7 +206,14 @@ class Maze {
         }
         table.appendChild(tableBody);
         mazeDiv.appendChild(table);
+        if (this.getMazeID() === userConfig.maze1ID) {
+            document.getElementsByTagName('table')[0].addEventListener('click', mazeClick, false);
+        } else if (this.getMazeID() === userConfig.maze2ID) {
+            document.getElementsByTagName('table')[1].addEventListener('click', mazeClick, false);
+        }
+
     }
+
 
     createMaze() {  // creates the empty maze.
         for (let row = 0; row < this.rows; row += 1) {

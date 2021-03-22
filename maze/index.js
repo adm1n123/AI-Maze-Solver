@@ -33,6 +33,7 @@ class UserConfig {
             col: this.mazeCols - 1
         }]
 
+        this.isRunning = false;
         this.isMazeGenerated = false; // set true when maze is generated and never set to false.
     }
 
@@ -119,6 +120,7 @@ function createMaze(count) {
         userConfig.maze2.setIsSearching(false);
     }
     setVisualizeButton();
+    userConfig.isRunning = false;
 }
 
 function generateMaze() {
@@ -129,6 +131,7 @@ function generateMaze() {
         userConfig.generateMaze1();
     }
     setVisualizeButton();
+    userConfig.isRunning = false;
 }
 
 function resetMaze() {
@@ -146,6 +149,7 @@ function resetMaze() {
         userConfig.maze1.setIsSearching(false);
     }
     setVisualizeButton();
+    userConfig.isRunning = false;
 }
 
 function cleanMaze() {
@@ -162,6 +166,7 @@ function cleanMaze() {
         userConfig.maze1.setIsSearching(false);
     }
     setVisualizeButton();
+    userConfig.isRunning = false;
 }
 
 function setVisualizeButton() {
@@ -200,6 +205,7 @@ async function visualize() {
     }
     if (isPathDrawn() === true) return;
     setPauseButton();
+    userConfig.isRunning = true;    // user is running.
 
     // get the name of algorithms from drop down
     // initialize algorithm
@@ -262,6 +268,7 @@ async function oneStep() {
     // initialize algorithm
     if (isPathDrawn() === true) return;
     setVisualizeButton();
+    userConfig.isRunning = true;
 
     if (userConfig.maze1.getIsSearching() === true) {   // pause button is pressed.
         userConfig.maze1.setIsSearching(false);
@@ -322,14 +329,30 @@ async function oneStep() {
 }
 
 
+function mazeClick(e) {
+    let row = e.target.parentElement.rowIndex;
+    let col = e.target.cellIndex;
+    if (Number.isInteger(row) === false || Number.isInteger(col) === false) return;
 
-
-
-
-
-
-
-
+    if (userConfig.isRunning === true) {    // user can only change cell if algorithm is not running.
+        alert("!!! Algorithm is running Reset maze before customizing !!!");
+        return;
+    }
+    if (userConfig.maze1 !== null) {
+        let cell = userConfig.maze1.maze[row][col];
+        if (userConfig.maze1.isSourceCell(cell) === true || userConfig.maze1.isDestinationCell(cell) === true) {
+            return; // don't change cell on click if it is source or destination.
+        }
+        userConfig.maze1.flipCellState(cell);
+    }
+    if (userConfig.maze2 !== null) {
+        let cell = userConfig.maze2.maze[row][col];
+        if (userConfig.maze2.isSourceCell(cell) === true || userConfig.maze2.isDestinationCell(cell) === true) {
+            return; // don't change cell on click if it is source or destination.
+        }
+        userConfig.maze2.flipCellState(cell);
+    }
+}
 
 
 
@@ -341,62 +364,3 @@ async function oneStep() {
 
 
 //#############################################################################  TESTING METHODS DON'T REMOVE  #######################################################################
-function test(bool) {
-    if(bool === true) {
-        alert(WALL);
-        let obj = new Dijkstra();
-        alert(obj);
-        let node = obj.getNode()
-    } else {
-        alert("Empty value" + EMPTY);
-    }
-}
-
-function testingMaze() {
-    let maze1 = new Maze('maze1', 7, 15);
-    maze1.createMaze();
-    maze1.maze[0][0].state = SOURCE;
-    maze1.maze[maze1.rows-1][maze1.cols-1].state = DESTINATION;
-    maze1.generateWalls();
-    // console.log(maze1.maze);
-    return maze1;
-}
-
-function mazeToString(maze) {
-    let mazeStr = '';
-    for (let i = 0; i < maze.rows; i += 1) {
-        for (let j = 0; j < maze.cols; j += 1) {
-            mazeStr += '    '+maze.maze[i][j].state;
-        }
-        mazeStr += '\n';
-    }
-    return mazeStr;
-}
-
-function Test() {
-
-
-    // check source / destinations are set properly
-
-    // check maze is ready or not (previous state is clear or not)
-    // read maze size if not use default size
-    alert("testing called");
-    let maze1 = testingMaze();
-
-    let mazeStr = mazeToString(maze1);
-
-    // get the name of algorithms from drop down
-
-    // initialize algorithm
-    let dijkstra = new Dijkstra(maze1);
-    maze1.setIsSearching(true);
-    // run algorithms
-    while (maze1.getIsSearching() === true) {
-        dijkstra.runStep(maze1);
-    }
-    maze1.drawPath();
-    console.info(maze1.maze);
-
-    let solution = mazeToString(maze1);
-    alert('Maze\n'+mazeStr+'\nSolution\n'+solution);
-}
