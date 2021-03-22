@@ -20,6 +20,7 @@
     <script type="text/javascript" src="algorithms/Dijkstra.js"></script>
     <script type="text/javascript" src="maze/maze.js"></script>
     <script type="text/javascript" src="maze/index.js"></script>
+    <script type="text/javascript" src="maze/customization.js"></script>
 </head>
 <body>
 
@@ -52,6 +53,16 @@
             <span>Maze 2</span>
             <div id="maze2"></div>
         </div>
+    </div>
+    <!-- context menu -->
+    <div id="contextMenu" class="context-menu"
+         style="display:none">
+        <ul>
+            <li><button class="btn btn-primary" onclick="setSource();">Source</button></li>
+            <li><button class="btn btn-primary" onclick="setDestination();">Destination</button></li>
+            <li><button class="btn btn-primary" onclick="setEmpty();">Path</button></li>
+            <li><button class="btn btn-primary" onclick="setWall();">Wall</button></li>
+        </ul>
     </div>
 
 </div>

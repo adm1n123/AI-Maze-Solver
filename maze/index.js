@@ -35,6 +35,10 @@ class UserConfig {
 
         this.isRunning = false;
         this.isMazeGenerated = false; // set true when maze is generated and never set to false.
+
+        // storing the right click (row, col)
+        this.clickRow = -1;
+        this.clickCol = -1;
     }
 
     generateMaze1() {
@@ -103,6 +107,23 @@ class UserConfig {
 
 function sleep (milliSeconds) {
     return new Promise((resolve) => setTimeout(resolve, milliSeconds));
+}
+
+function isSourceDestinationSet() {
+    if (userConfig.maze1 !== null){
+        if(userConfig.maze1.hasSourceDestination() === true) {
+            if (userConfig.maze2 !== null){
+                if(userConfig.maze2.hasSourceDestination() === true) {
+                    return true;
+                }
+                alert("!!! Select Source/Destination in Maze 2 !!!");
+                return false;
+            }
+            return true;
+        }
+        alert("!!! Select Source/Destination in Maze !!!");
+        return false;
+    }
 }
 
 function createMaze(count) {
@@ -204,6 +225,7 @@ async function visualize() {
         return;
     }
     if (isPathDrawn() === true) return;
+    if (isSourceDestinationSet() === false) return;     // if source and destination is not set return.
     setPauseButton();
     userConfig.isRunning = true;    // user is running.
 
@@ -267,6 +289,7 @@ async function oneStep() {
     // get the name of algorithms from drop down
     // initialize algorithm
     if (isPathDrawn() === true) return;
+    if (isSourceDestinationSet() === false) return;     // if source and destination is not set return.
     setVisualizeButton();
     userConfig.isRunning = true;
 
@@ -327,35 +350,6 @@ async function oneStep() {
         userConfig.maze2.setIsSearching(false);
     }
 }
-
-
-function mazeClick(e) {
-    let row = e.target.parentElement.rowIndex;
-    let col = e.target.cellIndex;
-    if (Number.isInteger(row) === false || Number.isInteger(col) === false) return;
-
-    if (userConfig.isRunning === true) {    // user can only change cell if algorithm is not running.
-        alert("!!! Algorithm is running Reset maze before customizing !!!");
-        return;
-    }
-    if (userConfig.maze1 !== null) {
-        let cell = userConfig.maze1.maze[row][col];
-        if (userConfig.maze1.isSourceCell(cell) === true || userConfig.maze1.isDestinationCell(cell) === true) {
-            return; // don't change cell on click if it is source or destination.
-        }
-        userConfig.maze1.flipCellState(cell);
-    }
-    if (userConfig.maze2 !== null) {
-        let cell = userConfig.maze2.maze[row][col];
-        if (userConfig.maze2.isSourceCell(cell) === true || userConfig.maze2.isDestinationCell(cell) === true) {
-            return; // don't change cell on click if it is source or destination.
-        }
-        userConfig.maze2.flipCellState(cell);
-    }
-}
-
-
-
 
 
 

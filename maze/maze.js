@@ -53,7 +53,13 @@ class Maze {
                 }
             }
         }
+        return null;
     }
+
+    hasSourceCell() {
+        return this.getSourceCell() !== null;
+    }
+
     setSourceCell(source) {
         // set source cell.
         this.maze[source.row][source.col].state = SOURCE;
@@ -93,8 +99,23 @@ class Maze {
         });
     }
 
+    hasDestinationCell() {
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state === DESTINATION) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     clearDestinationCells() {
         // clear all the destination cells
+    }
+
+    hasSourceDestination() {
+        return this.hasSourceCell() && this.hasDestinationCell();
     }
 
     getCellState(cell) {
