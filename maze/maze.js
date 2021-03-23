@@ -289,6 +289,51 @@ class Maze {
         return path;
     }
 
+    getNewStateCells() {
+
+          // return list of destination cells
+          let newStateCells = [];
+          for (let row = 0; row < this.rows; row += 1) {
+              for (let col = 0; col < this.cols; col += 1) {
+                  if (this.maze[row][col].heuristics.state === NEW) {
+                    newStateCells.push(this.maze[row][col]);
+                  }
+              }
+          }
+          return newStateCells;
+
+    }
+
+    getOpenStateCells() {
+
+        // return list of destination cells
+        let openStateCells = [];
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].heuristics.state === OPEN) {
+                    openStateCells.push(this.maze[row][col]);
+                }
+            }
+        }
+        return openStateCells;
+
+  }
+
+    getClosedStateCells() {
+
+    // return list of destination cells
+    let closedStateCells = [];
+    for (let row = 0; row < this.rows; row += 1) {
+        for (let col = 0; col < this.cols; col += 1) {
+            if (this.maze[row][col].heuristics.state === CLOSED) {
+                closedStateCells.push(this.maze[row][col]);
+            }
+        }
+    }
+    return closedStateCells;
+
+}
+
     isPathDrawn() {
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
@@ -298,6 +343,28 @@ class Maze {
             }
         }
         return false;
+    }
+
+    setStatistics(){
+        
+        let newStateCells = this.getNewStateCells(); 
+        var notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
+        notVisitedCells.value = newStateCells.length ;
+
+        let openStateCells = this.getOpenStateCells();
+        var visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
+        visitedCells.value = openStateCells.length ;
+
+        let closedStateCells = this.getClosedStateCells();
+        var exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
+        exploredCells.value = closedStateCells.length ;
+        
+    }
+
+    setPath(){
+        let path = this.getPath();
+        var pathLength = document.getElementById("Path Length"+" "+this.mazeID);
+        pathLength.value = path.length ;
     }
 }
 

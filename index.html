@@ -58,7 +58,7 @@
                     <option value='Pro'>Pro</option>
                 </select>
 
-                <label for="delay">Delay(ms)</label>
+                <label for="delay">Delay</label>
                 <input type="number" id="delay" name="delay" value="50" style="width: 90px;" min="0" max="10000" onchange="delayChange(this.value);">
             </div>
         </div>
@@ -81,13 +81,16 @@
                 
                 <span><b>Statistics</b> &nbsp</span>
                 <label for="Open">Not Visited Cells</label>
-                <input type="number" id="Not Visited Cells" name="Not Visited Cells" readonly  style="width: 90px;" min="0">
+                <input type="number" id="Not Visited Cells maze1" name="Not Visited Cells" readonly value="0" style="width: 90px;" min="0">
         
                 <label for="Open">Visited Cells</label>
-                <input type="number" id="Visited Cells" name="Visited Cells" readonly  style="width: 90px;" min="0">
+                <input type="number" id="Visited Cells maze1" name="Visited Cells" readonly value="0"  style="width: 90px;" min="0">
         
                 <label for="Open">Explored Cells</label>
-                <input type="number" id="Explored Cells" name="Explored Cells" readonly  style="width: 90px;" min="0">
+                <input type="number" id="Explored Cells maze1" name="Explored Cells" readonly value="0"  style="width: 90px;" min="0">
+
+                <label for="Open">Path Length</label>
+                <input type="number" id="Path Length maze1" name="Path Length" readonly value="0" style="width: 90px;" min="0">
                     
                     
                     
@@ -115,13 +118,16 @@
 
             <span><b>Statistics</b> &nbsp</span>
             <label for="Open">Not Visited Cells</label>
-            <input type="number" id="Not Visited Cells" name="Not Visited Cells" readonly  style="width: 90px;" min="0">
+            <input type="number" id="Not Visited Cells maze2" name="Not Visited Cells" readonly value="0" style="width: 90px;" min="0">
     
             <label for="Open">Visited Cells</label>
-            <input type="number" id="Visited Cells" name="Visited Cells" readonly  style="width: 90px;" min="0">
+            <input type="number" id="Visited Cells maze2" name="Visited Cells" readonly value="0"  style="width: 90px;" min="0">
     
             <label for="Open">Explored Cells</label>
-            <input type="number" id="Explored Cells" name="Explored Cells" readonly  style="width: 90px;" min="0">
+            <input type="number" id="Explored Cells maze2" name="Explored Cells" readonly value="0"  style="width: 90px;" min="0">
+
+            <label for="Open">Path Length</label>
+            <input type="number" id="Path Length maze2" name="Path Length" readonly value="0" style="width: 90px;" min="0">
 
             <div id="maze2"></div>
         </div>
