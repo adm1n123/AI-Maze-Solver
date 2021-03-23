@@ -63,7 +63,6 @@ class UserConfig {
         if (maze1Div !== null)
             maze1Div.innerHTML = '';
 
-
         if (this.maze1 !== null) {
             this.maze1 = null;
         }
@@ -90,8 +89,6 @@ class UserConfig {
             this.removeMaze2();
 
         }
-
-
     }
 
     generateMaze2() {

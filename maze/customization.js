@@ -233,7 +233,7 @@ function selectSize(value) {
 function selectLevel(value) {
     if (userConfig.isRunning === true) {    // user can only change size if algorithm is not running.
         if (userConfig.maze1 !== null || userConfig.maze2 !== null) {
-            document.getElementById("selectMazeSize").selectedIndex = 0;
+            document.getElementById("mazeLevels").selectedIndex = 0;
         } 
         alert("!!! Algorithm is running, Set difficulty level before visualization !!!");
         return;
@@ -253,22 +253,11 @@ function selectLevel(value) {
     }
    
     if (userConfig.maze2 !== null) {
-        
-        
         userConfig.wallProb = wallProb;
         userConfig.generateMaze1();
         userConfig.generateMaze2();
-        
-    }
-    else if  (userConfig.maze1 !== null) {
-        
+    } else if  (userConfig.maze1 !== null) {
         userConfig.wallProb = wallProb;
         userConfig.generateMaze1();
-        
-        
     }
-   
-        
-
-    
 }
