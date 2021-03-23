@@ -36,14 +36,6 @@ class Dijkstra {
             let neighbors = this.getUnvisitedNeighbours(current, mazeObject);
             let self = this;
             neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
-                if (mazeObject.isDestinationCell(element) === true) {   // path found
-                    mazeObject.setIsSearching(false);
-                    element.heuristics.state = CLOSED;
-                    element.heuristics.parent = current;
-                    element.heuristics.cost = current.heuristics.cost + 1;
-                    self.closedSet.add(element);
-                    return true;
-                }
                 if (element.heuristics.state === NEW) {
                     element.heuristics.state = OPEN;
                     element.heuristics.parent = current;
@@ -53,6 +45,12 @@ class Dijkstra {
                 if (element.heuristics.cost > current.heuristics.cost + 1) {
                     element.heuristics.cost = current.heuristics.cost + 1;
                     element.heuristics.parent = current;
+                }
+                if (mazeObject.isDestinationCell(element) === true) {   // path found
+                    mazeObject.setIsSearching(false);
+                    element.heuristics.state = CLOSED;
+                    self.closedSet.add(element);
+                    return true;
                 }
             });
             return true;
