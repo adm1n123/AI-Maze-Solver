@@ -39,6 +39,10 @@ class UserConfig {
         // storing the right click (row, col)
         this.clickRow = -1;
         this.clickCol = -1;
+
+        // wall probability
+        
+        this.wallProb = .15 ;
     }
 
     generateMaze1() {
@@ -52,7 +56,7 @@ class UserConfig {
             this.maze1 = null; 
         }
        
-        this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols);
+        this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols, this.wallProb);
        
         this.maze1.createMaze();
         
@@ -88,7 +92,7 @@ class UserConfig {
         {
             this.maze2 = null; 
         }
-        this.maze2 = new Maze(this.maze2ID, this.mazeRows, this.mazeCols);
+        this.maze2 = new Maze(this.maze2ID, this.mazeRows, this.mazeCols, this.wallProb);
         this.maze1.copyMaze(this.maze2);   // copy all the maze1 states to maze2. make sure maze1 is clean.
         this.initAlgoObject(this.maze2);
     }

@@ -45,7 +45,7 @@ function rightClick(e) {
     e.preventDefault();
     if (userConfig.isRunning === true) {    // user can only change cell if algorithm is not running.
         e.preventDefault();
-        alert("!!! Algorithm is running Reset maze before customizing !!!");
+        alert("!!! Algorithm is running, Reset maze before customizing !!!");
         return;
     }
 
@@ -242,6 +242,53 @@ function selectSize(value) {
         }]
 
        
+        userConfig.generateMaze1();
+        
+        
+    }
+   
+        
+
+    
+}
+
+
+// #################################### Select Level ###################################
+
+
+function selectLevel(value) {
+    if (userConfig.isRunning === true) {    // user can only change size if algorithm is not running.
+        if (userConfig.maze1 !== null || userConfig.maze2 !== null) {
+            document.getElementById("selectMazeSize").selectedIndex = 0;
+        } 
+        alert("!!! Algorithm is running, Set difficulty level before visualization !!!");
+        return;
+    }
+
+    let wallProb = null;
+    if (value === 'Easy') {
+        wallProb = .15;
+    } else if (value === 'Medium') {
+        wallProb = .25;
+    } else if (value === 'Difficult') {
+        wallProb = .35;
+    } else if (value === 'Pro') {
+        wallProb = .45;
+    } else {
+        return;
+    }
+   
+    if (userConfig.maze2 !== null) {
+        
+        
+        userConfig.wallProb = wallProb;
+        userConfig.generateMaze1();
+        userConfig.generateMaze2();
+        
+    }
+    else if  (userConfig.maze1 !== null) {
+        
+        userConfig.wallProb = wallProb;
         userConfig.generateMaze1();
         
         

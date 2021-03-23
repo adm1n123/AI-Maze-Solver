@@ -1,5 +1,5 @@
 class Maze {
-    constructor(mazeID, rows, cols) {
+    constructor(mazeID, rows, cols, wallProb) {
         this.mazeID = mazeID;
         this.rows = rows;
         this.cols = cols;
@@ -7,6 +7,7 @@ class Maze {
         this.maze = [[]];
         this.isSearching = false;
         this.isGenerating = false;
+        this.wallProb = wallProb ;
     }
 
     getMazeID() {
@@ -163,7 +164,7 @@ class Maze {
         let walls = 0;
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
-                if(Math.random() < .28) {
+                if(Math.random() < this.wallProb) {
                     walls += 1;
                     this.setCellState(this.maze[row][col], WALL);
                 } else {
@@ -227,6 +228,7 @@ class Maze {
         }
         table.appendChild(tableBody);
         mazeDiv.appendChild(table);
+
         if (this.getMazeID() === userConfig.maze1ID) {
             document.getElementsByTagName('table')[0].addEventListener('click', mazeClick, false);
         } else if (this.getMazeID() === userConfig.maze2ID) {
