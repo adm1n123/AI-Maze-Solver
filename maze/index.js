@@ -67,17 +67,28 @@ class UserConfig {
         if (this.maze1 !== null) {
             this.maze1 = null;
         }
+
         this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols, this.wallProb);
+
         this.maze1.createMaze();
+
         this.maze1.generateWalls();
+
         this.maze1.setSourceCell(this.source);
+
+
         this.maze1.setDestinationCells(this.destinationList);
+
+
         this.isMazeGenerated = true;    // maze generated for the first time.
 
         this.initAlgoObject(this.maze1);  // initialize algo object for generated maze
+
         // Remove the maze2 if present.
         if (this.maze2 !== null) {
+
             this.removeMaze2();
+
         }
     }
 
@@ -94,11 +105,16 @@ class UserConfig {
     }
 
     removeMaze2() {
+
         this.maze2 = null;
+
         let maze2Div = document.getElementById(this.maze2ID);
+
         if (maze2Div !== null) {
             maze2Div.innerHTML = '';
+
         }
+
     }
 
     getAlgoObject(algoName, mazeObject) {
@@ -117,12 +133,8 @@ class UserConfig {
             algoObject = new Bidirectional(mazeObject);
         } else if (algoName === DIJKSTRA_ALGO) {
             algoObject = new Dijkstra(mazeObject);
-        } else if (algoName === GBFS_M_ALGO) {
-            algoObject = new GBFS(mazeObject, GBFS_M_ALGO);
-        } else if (algoName === GBFS_E_ALGO) {
-            algoObject = new GBFS(mazeObject, GBFS_E_ALGO);
-        } else if (algoName === GBFS_D_ALGO) {
-            algoObject = new GBFS(mazeObject, GBFS_D_ALGO);
+        } else if (algoName === GBFS_ALGO) {
+            algoObject = new GBFS(mazeObject);
         }
         return algoObject;
     }
@@ -275,10 +287,12 @@ async function visualize() {
         let reachable = true;
         while (userConfig.maze1.getIsSearching() === true && reachable === true) {
             reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+           
             userConfig.maze1.setStatistics();
+           
             await sleep(userConfig.delay);
         }
-        if (reachable === true) {
+        if (userConfig.maze1.getIsSearching() === false) {
             let path = userConfig.maze1.getPath();
             for (const element of path) {
                 userConfig.maze1.setCellState(element, PATH);
@@ -295,15 +309,25 @@ async function visualize() {
         // run algorithms
         let maze1Reachable = true;
         let maze2Reachable = true;
-        while (userConfig.maze1.getIsSearching() === true && maze1Reachable === true &&
-        userConfig.maze2.getIsSearching() === true && maze2Reachable === true ) {
-            maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
-            userConfig.maze1.setStatistics();
-            maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
-            userConfig.maze2.setStatistics();
+
+        while ((maze1Reachable === true && userConfig.maze1.getIsSearching() === true) ||
+         (maze2Reachable === true && userConfig.maze1.getIsSearching() === true) ) {
+            if(userConfig.maze1.getIsSearching() === true){
+                maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+                userConfig.maze1.setStatistics();
+            }
+            
+            if(userConfig.maze2.getIsSearching() === true)
+            {
+                maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
+                userConfig.maze2.setStatistics();
+            }
+
             await sleep(userConfig.delay);
         }
-        if (maze1Reachable === true && userConfig.maze1.getIsSearching() === false) {
+
+        
+        if (userConfig.maze1.getIsSearching() === false) {
             let path = userConfig.maze1.getPath();
             for (const element of path) {
                 userConfig.maze1.setCellState(element, PATH);
@@ -311,7 +335,8 @@ async function visualize() {
             }
             userConfig.maze1.setPath();
         }
-        if (maze2Reachable === true && userConfig.maze2.getIsSearching() === false) {
+        
+        if (userConfig.maze2.getIsSearching() === false) {
             let path = userConfig.maze2.getPath();
             for (const element of path) {
                 userConfig.maze2.setCellState(element, PATH);
@@ -353,7 +378,7 @@ async function oneStep() {
         userConfig.maze1.setStatistics();
         await sleep(userConfig.delay);
 
-        if (reachable === true && userConfig.maze1.getIsSearching() === false) {
+        if (userConfig.maze1.getIsSearching() === false) {
             let path = userConfig.maze1.getPath();
             for (const element of path) {
                 userConfig.maze1.setCellState(element, PATH);
@@ -377,7 +402,7 @@ async function oneStep() {
         userConfig.maze2.setStatistics();
         await sleep(userConfig.delay);
 
-        if (maze1Reachable === true && userConfig.maze1.getIsSearching() === false) {
+        if (userConfig.maze1.getIsSearching() === false) {
             let path = userConfig.maze1.getPath();
             for (const element of path) {
                 userConfig.maze1.setCellState(element, PATH);
@@ -385,7 +410,7 @@ async function oneStep() {
             }
             userConfig.maze1.setPath();
         }
-        if (maze2Reachable === true && userConfig.maze2.getIsSearching() === false) {
+        if (userConfig.maze2.getIsSearching() === false) {
             let path = userConfig.maze2.getPath();
             for (const element of path) {
                 userConfig.maze2.setCellState(element, PATH);
