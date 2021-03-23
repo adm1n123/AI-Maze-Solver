@@ -20,7 +20,9 @@ const BFS_ALGO = 'BFS';
 const DFS_ALGO = 'DFS';
 const BIDIRECTIONAL_ALGO = 'Bidirectional';
 const DIJKSTRA_ALGO = 'Dijkstra';
-const GBFS_ALGO = 'GBFS';
+const GBFS_M_ALGO = 'GBFS+M';
+const GBFS_E_ALGO = 'GBFS+E';
+const GBFS_D_ALGO = 'GBFS+D';
 
 // CSS classes
 const EMPTY_CLASS = 'empty';
