@@ -45,39 +45,66 @@ class UserConfig {
         let maze1Div = document.getElementById(this.maze1ID);
         if (maze1Div !== null)
             maze1Div.innerHTML = '';
+        
+        
+        if(this.maze1 !== null)
+        {
+            this.maze1 = null; 
+        }
+       
         this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols);
+       
         this.maze1.createMaze();
+        
         this.maze1.generateWalls();
-
+        
         this.maze1.setSourceCell(this.source);
+        
+        
         this.maze1.setDestinationCells(this.destinationList);
-
+        
+        
         this.isMazeGenerated = true;    // maze generated for the first time.
-
+        
         this.initAlgoObject(this.maze1);  // initialize algo object for generated maze
+        
         // Remove the maze2 if present.
-        this.maze2 = null;
-        let maze2Div = document.getElementById(this.maze2ID);
-        if (maze2Div !== null)
-            maze2Div.innerHTML = '';
-        // use slide up if possible don't make innerHTML = '' now it is done when createTwoMaze is called.
+        if(this.maze2 !== null)
+        {
+            
+            this.removeMaze2();
+            
+        }
+       
+        
+        
     }
 
     generateMaze2() {
         // maze1 is by default created so just copy the maze1.
         this.maze1.resetMaze(); // clear all visited and path cells.
         this.removeMaze2(); // remove and create new maze2 object.
-
+        if(this.maze2 !== null)
+        {
+            this.maze2 = null; 
+        }
         this.maze2 = new Maze(this.maze2ID, this.mazeRows, this.mazeCols);
         this.maze1.copyMaze(this.maze2);   // copy all the maze1 states to maze2. make sure maze1 is clean.
         this.initAlgoObject(this.maze2);
     }
 
     removeMaze2() {
+        
         this.maze2 = null;
+        
         let maze2Div = document.getElementById(this.maze2ID);
+        
         if (maze2Div !== null)
+        {
             maze2Div.innerHTML = '';
+           
+        }
+        
     }
 
     getAlgoObject(algoName, mazeObject) {

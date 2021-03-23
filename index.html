@@ -37,7 +37,22 @@
             <button class="btn btn-primary" onclick="oneStep();">One Step</button>
             <button id="mazeCountButton" class="btn btn-primary" value="two" onclick="createMaze();">Double Maze</button>
 
-            <label for="selectMaze1">Maze1</label>
+            <label for="selectMazeSize">Maze Size</label>
+            <select id ="selectMazeSize" name="Size" onmousedown="this.value='';" onchange="selectSize(this.value);">
+                <option value=''>select size</option>
+                <option value='25' >25 by 25</option>
+                <option value='20' selected>20 by 20</option>
+                <option value='15' >15 by 15</option>
+                <option value='10' >10 by 10</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+          
+
+            <span>Maze 1</span>
             <select id ="selectMaze1" name="" onmousedown="this.value='';" onchange="selectAlgo('maze1', this.value);">
                 <option value=''>select algo</option>
                 <option value='A*+M'>A* Manhattan</option>
@@ -49,7 +64,14 @@
                 <option value='GBFS'>Greedy Best</option>
                 <option value='Bidirectional'>Bidirectional</option>
             </select>
-            <label for="selectMaze2">Maze2</label>
+            <div id="maze1"></div>
+
+        </div>
+        <div class="col-6">
+
+        
+
+            <span>Maze 2</span>
             <select id ="selectMaze2" name="" onmousedown="this.value='';" onchange="selectAlgo('maze2', this.value);">
                 <option value=''>select algo</option>
                 <option value='A*+M' selected>A* Manhattan</option>
@@ -61,23 +83,12 @@
                 <option value='GBFS'>Greedy Best</option>
                 <option value='Bidirectional'>Bidirectional</option>
             </select>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <span>Maze 1</span>
-            <div id="maze1"></div>
-
-        </div>
-        <div class="col-6">
-
-            <span>Maze 2</span>
             <div id="maze2"></div>
         </div>
     </div>
     <!-- context menu -->
     <div id="contextMenu" class="context-menu"
-         style="display:none">
+    style="display:none">
         <ul>
             <li><button class="btn btn-primary" onclick="setSource();">Source</button></li>
             <li><button class="btn btn-primary" onclick="setDestination();">Destination</button></li>

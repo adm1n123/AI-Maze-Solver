@@ -188,3 +188,66 @@ function selectAlgo(maze, value) {
         // alert("maze2 algo:"+userConfig.maze2Algo.name);
     }
 }
+
+
+// #################################### Select size ###################################
+
+
+function selectSize(value) {
+    if (userConfig.isRunning === true) {    // user can only change size if algorithm is not running.
+        if (userConfig.maze1 !== null || userConfig.maze2 !== null) {
+            document.getElementById("selectMazeSize").selectedIndex = 0;
+        } 
+        alert("!!! Algorithm is running, Set maze size before visualization !!!");
+        return;
+    }
+
+    let size = null;
+    if (value === '25') {
+        size = 25;
+    } else if (value === '20') {
+        size = 20;
+    } else if (value === '15') {
+        size = 15;
+    } else if (value === '10') {
+        size = 10;
+    } else {
+        return;
+    }
+   
+    if (userConfig.maze2 !== null) {
+        
+        
+        userConfig.mazeRows = size;
+        userConfig.mazeCols = size;
+     
+        userConfig.destinationList = [{
+            row: size - 1,
+            col: size - 1
+        }]
+        
+        userConfig.generateMaze1();
+        
+        userConfig.generateMaze2();
+        
+    }
+    else if  (userConfig.maze1 !== null) {
+        
+        userConfig.mazeRows = size;
+        userConfig.mazeCols = size;
+
+        userConfig.destinationList = [{
+            row: size - 1,
+            col: size - 1
+        }]
+
+       
+        userConfig.generateMaze1();
+        
+        
+    }
+   
+        
+
+    
+}
