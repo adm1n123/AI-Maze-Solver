@@ -216,40 +216,14 @@ function selectSize(value) {
     }
    
     if (userConfig.maze2 !== null) {
-        
-        
-        userConfig.mazeRows = size;
-        userConfig.mazeCols = size;
-     
-        userConfig.destinationList = [{
-            row: size - 1,
-            col: size - 1
-        }]
-        
+        userConfig.resizeMaze(size);
         userConfig.generateMaze1();
-        
         userConfig.generateMaze2();
         
-    }
-    else if  (userConfig.maze1 !== null) {
-        
-        userConfig.mazeRows = size;
-        userConfig.mazeCols = size;
-
-        userConfig.destinationList = [{
-            row: size - 1,
-            col: size - 1
-        }]
-
-       
+    } else if  (userConfig.maze1 !== null) {
+        userConfig.resizeMaze(size);
         userConfig.generateMaze1();
-        
-        
     }
-   
-        
-
-    
 }
 
 
