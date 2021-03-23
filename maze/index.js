@@ -294,7 +294,7 @@ async function visualize() {
                 await sleep(userConfig.delay);
             }
         } else {
-            alert("Destination Unreachable !!!");
+            alert("!!! Destination Unreachable !!!");
         }
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
@@ -324,7 +324,7 @@ async function visualize() {
             }
         }
         if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
-            alert("Destination Unreachable !!!");
+            alert("!!! Destination Unreachable !!!");
         }
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
@@ -392,7 +392,7 @@ async function oneStep() {
             }
         }
         if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
-            alert("Destination Unreachable !!!");
+            alert("!!! Destination Unreachable !!!");
         }
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);

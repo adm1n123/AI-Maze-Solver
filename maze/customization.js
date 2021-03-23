@@ -270,19 +270,9 @@ function selectLevel(value) {
 // #################################### Select delay ###################################
 
 function delayChange(value) {
-    if (userConfig.isRunning === true) {    // user can only change delay if algorithm is not running.
-        if (userConfig.maze1 !== null || userConfig.maze2 !== null) {
-            document.getElementById("delay").selectedIndex = 0;
-        } 
-        alert("!!! Algorithm is running, Set delay, before visualization !!!");
-        return;
-    }
-
     let delay = null;
     if (value !== null ) {
         delay = parseInt(value);
     }
-   
     userConfig.delay = delay;
-   
 }
