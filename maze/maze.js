@@ -91,6 +91,19 @@ class Maze {
         }
         return destinations;
     }
+
+    getOneDestinationCell() {
+        // return one of destination cells
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state === DESTINATION) {
+                    return this.maze[row][col];
+                }
+            }
+        }
+        return null;
+    }
+
     setDestinationCells(destinationList) {
         // set list of destination cells
         let array = Array.from(destinationList);
@@ -270,6 +283,11 @@ class Maze {
     }
 
     getPath() {
+        if (this.mazeID === userConfig.maze1ID && userConfig.maze1Algo.name === BIDIRECTIONAL_ALGO) {
+
+        } else if (this.mazeID === userConfig.maze2ID) {
+
+        }
         let destinations = Array.from(this.getDestinationCells());
         let destination = null;
         destinations.some(function (element, index) {
