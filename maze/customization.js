@@ -243,11 +243,11 @@ function selectLevel(value) {
     if (value === 'Easy') {
         wallProb = .15;
     } else if (value === 'Medium') {
-        wallProb = .25;
+        wallProb = .2;
     } else if (value === 'Difficult') {
-        wallProb = .35;
+        wallProb = .25;
     } else if (value === 'Pro') {
-        wallProb = .45;
+        wallProb = .3;
     } else {
         return;
     }
