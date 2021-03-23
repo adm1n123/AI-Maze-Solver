@@ -169,11 +169,16 @@ function selectAlgo(maze, value) {
         algoName = DFS_ALGO;
     } else if (value === 'BFS') {
         algoName = BFS_ALGO;
-    } else if (value === 'GBFS') {
-        algoName = GBFS_ALGO;
+    } else if (value === 'GBFS+M') {
+        algoName = GBFS_M_ALGO;
+    } else if (value === 'GBFS+E') {
+        algoName = GBFS_E_ALGO;
+    } else if (value === 'GBFS+D') {
+        algoName = GBFS_D_ALGO;
     } else if (value === 'Bidirectional') {
         algoName = BIDIRECTIONAL_ALGO;
-    } else {
+    }
+    else {
         return;
     }
 
