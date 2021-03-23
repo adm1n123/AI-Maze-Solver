@@ -47,6 +47,15 @@ class AStar {
             let neighbors = this.getAllNeighbours(current, mazeObject);
             let self = this;
             neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
+                if (mazeObject.isDestinationCell(element) === true) {   // path found
+                    element.heuristics.g = current.heuristics.g + 1;
+                    element.heuristics.f = element.heuristics.g + element.heuristics.h;
+                    element.heuristics.parent = current;
+                    mazeObject.setIsSearching(false);
+                    element.heuristics.state = CLOSED;
+                    self.closedSet.add(element);
+                    return true;
+                }
                 if (element.heuristics.state === NEW) {
                     element.heuristics.state = OPEN;
                     element.heuristics.g = current.heuristics.g + 1;
@@ -70,13 +79,6 @@ class AStar {
                         element.heuristics.f = element.heuristics.g + element.heuristics.h;
                         element.heuristics.parent = current;
                     }
-                }
-
-                if (mazeObject.isDestinationCell(element) === true) {   // path found
-                    mazeObject.setIsSearching(false);
-                    element.heuristics.state = CLOSED;
-                    self.closedSet.add(element);
-                    return true;
                 }
             });
             return true;
