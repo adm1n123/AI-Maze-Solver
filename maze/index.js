@@ -14,7 +14,7 @@ class UserConfig {
         this.maze1ID = 'maze1';
         this.maze2ID = 'maze2';
         this.maze1Algo = {
-            name: DIJKSTRA_ALGO,
+            name: GBFS_E_ALGO,
             object: null
         }
         this.maze2Algo = {
@@ -66,28 +66,17 @@ class UserConfig {
         if (this.maze1 !== null) {
             this.maze1 = null;
         }
-
         this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols, this.wallProb);
-
         this.maze1.createMaze();
-
         this.maze1.generateWalls();
-
         this.maze1.setSourceCell(this.source);
-
-
         this.maze1.setDestinationCells(this.destinationList);
-
-
         this.isMazeGenerated = true;    // maze generated for the first time.
 
         this.initAlgoObject(this.maze1);  // initialize algo object for generated maze
-
         // Remove the maze2 if present.
         if (this.maze2 !== null) {
-
             this.removeMaze2();
-
         }
     }
 
@@ -104,16 +93,11 @@ class UserConfig {
     }
 
     removeMaze2() {
-
         this.maze2 = null;
-
         let maze2Div = document.getElementById(this.maze2ID);
-
         if (maze2Div !== null) {
             maze2Div.innerHTML = '';
-
         }
-
     }
 
     getAlgoObject(algoName, mazeObject) {
@@ -132,8 +116,12 @@ class UserConfig {
             algoObject = new Bidirectional(mazeObject);
         } else if (algoName === DIJKSTRA_ALGO) {
             algoObject = new Dijkstra(mazeObject);
-        } else if (algoName === GBFS_ALGO) {
-            algoObject = new GBFS(mazeObject);
+        } else if (algoName === GBFS_M_ALGO) {
+            algoObject = new GBFS(mazeObject, GBFS_M_ALGO);
+        } else if (algoName === GBFS_E_ALGO) {
+            algoObject = new GBFS(mazeObject, GBFS_E_ALGO);
+        } else if (algoName === GBFS_D_ALGO) {
+            algoObject = new GBFS(mazeObject, GBFS_D_ALGO);
         }
         return algoObject;
     }
