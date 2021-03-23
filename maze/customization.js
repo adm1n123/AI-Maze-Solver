@@ -169,11 +169,16 @@ function selectAlgo(maze, value) {
         algoName = DFS_ALGO;
     } else if (value === 'BFS') {
         algoName = BFS_ALGO;
-    } else if (value === 'GBFS') {
-        algoName = GBFS_ALGO;
+    } else if (value === 'GBFS+M') {
+        algoName = GBFS_M_ALGO;
+    } else if (value === 'GBFS+E') {
+        algoName = GBFS_E_ALGO;
+    } else if (value === 'GBFS+D') {
+        algoName = GBFS_D_ALGO;
     } else if (value === 'Bidirectional') {
         algoName = BIDIRECTIONAL_ALGO;
-    } else {
+    }
+    else {
         return;
     }
 
@@ -265,19 +270,9 @@ function selectLevel(value) {
 // #################################### Select delay ###################################
 
 function delayChange(value) {
-    if (userConfig.isRunning === true) {    // user can only change delay if algorithm is not running.
-        if (userConfig.maze1 !== null || userConfig.maze2 !== null) {
-            document.getElementById("delay").selectedIndex = 0;
-        } 
-        alert("!!! Algorithm is running, Set delay, before visualization !!!");
-        return;
-    }
-
     let delay = null;
     if (value !== null ) {
         delay = parseInt(value);
     }
-   
     userConfig.delay = delay;
-   
 }
