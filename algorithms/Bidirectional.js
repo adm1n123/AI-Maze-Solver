@@ -31,13 +31,13 @@ class Bidirectional {
         let source = mazeObject.getSourceCell();
         source.heuristics.from = SOURCE;
         let destination = mazeObject.getOneDestinationCell();
-        destination.from = DESTINATION;
+        destination.heuristics.from = DESTINATION;
 
         source.heuristics.g = 0;
         destination.heuristics.g = 0;
 
-        source.heuristics.h = this.fromSource.hFunction.hScore(source, SOURCE);
-        destination.heuristics.h = this.fromDestination.hFunction.hScore(destination, DESTINATION);
+        source.heuristics.h = this.fromSource.hFunction.hScore(source, mazeObject);
+        destination.heuristics.h = this.fromDestination.hFunction.hScore(destination, mazeObject);
 
         source.heuristics.f = source.heuristics.h + source.heuristics.g;
         destination.heuristics.f = destination.heuristics.h + destination.heuristics.g;
@@ -47,7 +47,11 @@ class Bidirectional {
     }
 
     runStep(mazeObject) {
+        let sourceFlag = false;
+        let destinationFlag = false;
+        // run from source.
         if (this.fromSource.openSet.size > 0) {
+            sourceFlag = true;
             let current = this.minCostCell(this.fromSource);
             this.fromSource.openSet.delete(current);
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
@@ -76,15 +80,15 @@ class Bidirectional {
                     element.heuristics.g = current.heuristics.g + 1;
                     element.heuristics.f = element.heuristics.g + element.heuristics.h;
                     element.heuristics.parent = current;
-                    self.openSet.add(element);
+                    self.fromSource.openSet.add(element);
                     mazeObject.setCellState(element, OPEN);
                 } else if (element.heuristics.state === CLOSED) {
                     if (element.heuristics.g > current.heuristics.g + 1) {
                         element.heuristics.g = current.heuristics.g + 1;
                         element.heuristics.f = element.heuristics.g + element.heuristics.h;
-                        self.closedSet.delete(element);
+                        self.fromSource.closedSet.delete(element);
                         element.heuristics.state = OPEN;
-                        self.openSet.add(element);
+                        self.fromSource.openSet.add(element);
                         element.heuristics.parent = current;
                         mazeObject.setCellState(element, EMPTY);
                     }
@@ -96,10 +100,64 @@ class Bidirectional {
                     }
                 }
             });
-            return true;
-        } else {
-            return false;
+            if (mazeObject.getIsSearching() === false)  // path found. no need to run for destination.
+                return true;
         }
+        // run from destination.
+        if (this.fromDestination.openSet.size > 0) {
+            destinationFlag = true;
+            let current = this.minCostCell(this.fromDestination);
+            this.fromDestination.openSet.delete(current);
+            current.heuristics.state = CLOSED;  // closed is internal state same as visited
+            this.fromDestination.closedSet.add(current);
+
+            // if (current.state === DESTINATION) {    // unexpected event just return.
+            //     mazeObject.setIsSearching(false);
+            //     return true;
+            // }
+            if (current.state !== DESTINATION)
+                mazeObject.setCellState(current, VISITED); // cell is visited change colour
+
+            let neighbors = this.getAllNeighbours(current, mazeObject);
+            let self = this;
+            neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
+                if (element.heuristics.from === SOURCE) {   // path found
+                    self.cellFromSource = element;
+                    self.cellFromDestination = current;
+                    mazeObject.setIsSearching(false);
+                    return true;
+                }
+                if (element.heuristics.state === NEW) {
+                    element.heuristics.from = DESTINATION;   // from will never change again.
+                    element.heuristics.state = OPEN;
+                    element.heuristics.h = self.fromDestination.hFunction.hScore(element, mazeObject);
+                    element.heuristics.g = current.heuristics.g + 1;
+                    element.heuristics.f = element.heuristics.g + element.heuristics.h;
+                    element.heuristics.parent = current;
+                    self.fromDestination.openSet.add(element);
+                    mazeObject.setCellState(element, OPEN);
+                } else if (element.heuristics.state === CLOSED) {
+                    if (element.heuristics.g > current.heuristics.g + 1) {
+                        element.heuristics.g = current.heuristics.g + 1;
+                        element.heuristics.f = element.heuristics.g + element.heuristics.h;
+                        self.fromDestination.closedSet.delete(element);
+                        element.heuristics.state = OPEN;
+                        self.fromDestination.openSet.add(element);
+                        element.heuristics.parent = current;
+                        mazeObject.setCellState(element, EMPTY);
+                    }
+                } else if (element.heuristics.state === OPEN) {
+                    if (element.heuristics.g > current.heuristics.g + 1) {
+                        element.heuristics.g = current.heuristics.g + 1;
+                        element.heuristics.f = element.heuristics.g + element.heuristics.h;
+                        element.heuristics.parent = current;
+                    }
+                }
+            });
+            if (mazeObject.getIsSearching() === false)  // path found.
+                return true;
+        }
+        return sourceFlag === true || destinationFlag === true;     // if any one run for step return true.
     }
 
     getAllNeighbours(cell, mazeObject) { // return neighbours with mentioned state.
