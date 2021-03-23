@@ -40,6 +40,7 @@ class Dijkstra {
                     element.heuristics.state = OPEN;
                     element.heuristics.parent = current;
                     self.openSet.add(element);
+                    mazeObject.setCellState(element, OPEN);
                 }
                 if (element.heuristics.cost > current.heuristics.cost + 1) {
                     element.heuristics.cost = current.heuristics.cost + 1;

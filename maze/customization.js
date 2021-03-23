@@ -261,3 +261,5 @@ function selectLevel(value) {
         userConfig.generateMaze1();
     }
 }
+
+// #################################### Print ###################################

@@ -53,6 +53,7 @@ class AStar {
                     element.heuristics.f = element.heuristics.g + element.heuristics.h;
                     element.heuristics.parent = current;
                     self.openSet.add(element);
+                    mazeObject.setCellState(element, OPEN);
                 } else if (element.heuristics.state === CLOSED) {
                     if (element.heuristics.g > current.heuristics.g + 1) {
                         element.heuristics.g = current.heuristics.g + 1;

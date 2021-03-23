@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>AI Maze Solver</title>
     <meta charset="UTF-8">
-<!--    Bootstrap   -->
+    <!--    Bootstrap   -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!--    Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="./maze/index.css"  />
-<!--    Custom JS   -->
+    <!--    Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="./maze/index.css" />
+    <!--    Custom JS   -->
     <script type="text/javascript" src="maze/constants.js"></script>
     <script type="text/javascript" src="algorithms/AStar.js"></script>
     <script type="text/javascript" src="algorithms/BFS.js"></script>
@@ -23,64 +24,81 @@
     <script type="text/javascript" src="maze/index.js"></script>
     <script type="text/javascript" src="maze/customization.js"></script>
 </head>
+
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <span>AI Maze Solver</span>
-            <!--<button onclick="Test();">Test</button>-->
-            <button class="btn btn-primary" onclick="generateMaze();">Generate</button>
-            <button class="btn btn-primary" onclick="resetMaze();">Reset</button>
-            <button class="btn btn-primary" onclick="cleanMaze();">Clean</button>
-            <button id="visualizeButton" class="btn btn-primary" onclick="visualize();">Visualize</button>
-            <button class="btn btn-primary" onclick="oneStep();">One Step</button>
-            <button id="mazeCountButton" class="btn btn-primary" value="two" onclick="createMaze();">Double Maze</button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <span>AI Maze Solver</span>
+                <!--<button onclick="Test();">Test</button>-->
+                <button class="btn btn-primary" onclick="generateMaze();">Generate</button>
+                <button class="btn btn-primary" onclick="resetMaze();">Reset</button>
+                <button class="btn btn-primary" onclick="cleanMaze();">Clean</button>
+                <button id="visualizeButton" class="btn btn-primary" onclick="visualize();">Visualize</button>
+                <button class="btn btn-primary" onclick="oneStep();">One Step</button>
+                <button id="mazeCountButton" class="btn btn-primary" value="two" onclick="createMaze();">Double
+                    Maze</button>
 
-            <label for="selectMazeSize">Maze Size</label>
-            <select id ="selectMazeSize" name="Size" onmousedown="this.value='';" onchange="selectSize(this.value);">
-                <option value=''>select size</option>
-                <option value='25' >25 by 25</option>
-                <option value='20' selected>20 by 20</option>
-                <option value='15' >15 by 15</option>
-                <option value='10' >10 by 10</option>
-            </select>
+                <label for="selectMazeSize">Maze Size</label>
+                <select id="selectMazeSize" name="Size" onmousedown="this.value='';" onchange="selectSize(this.value);">
+                    <option value=''>select size</option>
+                    <option value='25'>25 by 25</option>
+                    <option value='20' selected>20 by 20</option>
+                    <option value='15'>15 by 15</option>
+                    <option value='10'>10 by 10</option>
+                </select>
 
-            <label for="mazeLevels">Difficulty Level</label>
-            <select id ="mazeLevels" name="Size" onmousedown="this.value='';" onchange="selectLevel(this.value);">
-                <option value=''>select level</option>
-                <option value='Easy' selected>Easy</option>
-                <option value='Medium' >Medium</option>
-                <option value='Difficult' >Difficult</option>
-                <option value='Pro' >Pro</option>
-            </select>
+                <label for="mazeLevels">Difficulty Level</label>
+                <select id="mazeLevels" name="Size" onmousedown="this.value='';" onchange="selectLevel(this.value);">
+                    <option value=''>select level</option>
+                    <option value='Easy' selected>Easy</option>
+                    <option value='Medium'>Medium</option>
+                    <option value='Difficult'>Difficult</option>
+                    <option value='Pro'>Pro</option>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-          
 
-            <span>Maze 1</span>
-            <select id ="selectMaze1" name="" onmousedown="this.value='';" onchange="selectAlgo('maze1', this.value);">
-                <option value=''>select algo</option>
-                <option value='A*+M'>A* Manhattan</option>
-                <option value='A*+E'>A* Euclidean</option>
-                <option value='A*+D'>A* Diagonal</option>
-                <option value='Dijkstra' selected>Dijkstra</option>
-                <option value='DFS'>DFS</option>
-                <option value='BFS'>BFS</option>
-                <option value='GBFS'>Greedy Best</option>
-                <option value='Bidirectional'>Bidirectional</option>
-            </select>
-            <div id="maze1"></div>
-
-        </div>
-        <div class="col-6">
-
+        <div class="row">
+            <div class="col-6">
+                <span>Maze 1</span>
+                <select id="selectMaze1" name="" onmousedown="this.value='';"
+                    onchange="selectAlgo('maze1', this.value);">
+                    <option value=''>select algo</option>
+                    <option value='A*+M'>A* Manhattan</option>
+                    <option value='A*+E'>A* Euclidean</option>
+                    <option value='A*+D'>A* Diagonal</option>
+                    <option value='Dijkstra' selected>Dijkstra</option>
+                    <option value='DFS'>DFS</option>
+                    <option value='BFS'>BFS</option>
+                    <option value='GBFS'>Greedy Best</option>
+                    <option value='Bidirectional'>Bidirectional</option>
+                </select>
+                
+                <span><b>Statistics</b> &nbsp</span>
+                <label for="Open">Not Visited Cells</label>
+                <input type="number" id="Not Visited Cells" name="Not Visited Cells" readonly  style="width: 90px;" min="0">
         
+                <label for="Open">Visited Cells</label>
+                <input type="number" id="Visited Cells" name="Visited Cells" readonly  style="width: 90px;" min="0">
+        
+                <label for="Open">Explored Cells</label>
+                <input type="number" id="Explored Cells" name="Explored Cells" readonly  style="width: 90px;" min="0">
+                    
+                    
+                    
+                <div id="maze1"></div>
 
+
+            
+        </div>
+
+
+
+        <div class="col-6">
             <span>Maze 2</span>
-            <select id ="selectMaze2" name="" onmousedown="this.value='';" onchange="selectAlgo('maze2', this.value);">
+            <select id="selectMaze2" name="" onmousedown="this.value='';" onchange="selectAlgo('maze2', this.value);">
                 <option value=''>select algo</option>
                 <option value='A*+M' selected>A* Manhattan</option>
                 <option value='A*+E'>A* Euclidean</option>
@@ -91,12 +109,26 @@
                 <option value='GBFS'>Greedy Best</option>
                 <option value='Bidirectional'>Bidirectional</option>
             </select>
+
+            <span><b>Statistics</b> &nbsp</span>
+            <label for="Open">Not Visited Cells</label>
+            <input type="number" id="Not Visited Cells" name="Not Visited Cells" readonly  style="width: 90px;" min="0">
+    
+            <label for="Open">Visited Cells</label>
+            <input type="number" id="Visited Cells" name="Visited Cells" readonly  style="width: 90px;" min="0">
+    
+            <label for="Open">Explored Cells</label>
+            <input type="number" id="Explored Cells" name="Explored Cells" readonly  style="width: 90px;" min="0">
+
             <div id="maze2"></div>
         </div>
+
     </div>
+
+
+
     <!-- context menu -->
-    <div id="contextMenu" class="context-menu"
-    style="display:none">
+    <div id="contextMenu" class="context-menu" style="display:none">
         <ul>
             <li><button class="btn btn-primary" onclick="setSource();">Source</button></li>
             <li><button class="btn btn-primary" onclick="setDestination();">Destination</button></li>
@@ -105,6 +137,7 @@
         </ul>
     </div>
 
-</div>
+    </div>
 </body>
+
 </html>

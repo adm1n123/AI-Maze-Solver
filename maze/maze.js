@@ -148,6 +148,9 @@ class Maze {
         } else if (state === BORDER) {
             cell.state = BORDER;
             element.className = BORDER_CLASS;
+        } else if (state === OPEN) {
+            cell.heuristics.state = OPEN;
+            element.className = OPEN_CLASS;
         }
     }
 
@@ -222,6 +225,9 @@ class Maze {
                 // td.onclick = function (event) {
                 //     alert("click");
                 // };
+                td.style.width = '1px' ;
+                td.style.height = '1px' ;
+                
                 tr.appendChild(td);
             }
             tableBody.appendChild(tr);

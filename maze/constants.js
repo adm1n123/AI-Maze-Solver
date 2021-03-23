@@ -30,3 +30,4 @@ const DESTINATION_CLASS = 'destination';
 const VISITED_CLASS = 'visited';
 const BORDER_CLASS = 'border';
 const PATH_CLASS = 'path';
+const OPEN_CLASS = 'open';
