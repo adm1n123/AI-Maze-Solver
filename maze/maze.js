@@ -91,6 +91,19 @@ class Maze {
         }
         return destinations;
     }
+
+    getOneDestinationCell() {
+        // return one of destination cells
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state === DESTINATION) {
+                    return this.maze[row][col];
+                }
+            }
+        }
+        return null;
+    }
+
     setDestinationCells(destinationList) {
         // set list of destination cells
         let array = Array.from(destinationList);
@@ -269,7 +282,48 @@ class Maze {
         }
     }
 
+    getBidirectionalPath(fromSource, fromDestination) {
+        let pathCell = fromSource;
+        let spath = []; // don't include source and destination in path.
+        while (pathCell !== null && pathCell.state !== SOURCE) {
+            spath.push(pathCell);
+            pathCell = pathCell.heuristics.parent;
+        }
+        spath.reverse();
+
+        pathCell = fromDestination;
+        let dpath = []; // don't include source and destination in path.
+        while (pathCell !== null && pathCell.state !== DESTINATION) {
+            dpath.push(pathCell);
+            pathCell = pathCell.heuristics.parent;
+        }
+        dpath.reverse();
+
+        let path = [];
+        while (spath.length > 0 && dpath.length > 0) {
+            path.push(spath.pop());
+            path.push(dpath.pop());
+        }
+        while (spath.length > 0) {
+            path.push(spath.pop());
+        }
+        while (dpath.length > 0) {
+            path.push(dpath.pop());
+        }
+        return path;
+    }
+
     getPath() {
+        if (this.mazeID === userConfig.maze1ID && userConfig.maze1Algo.name === BIDIRECTIONAL_ALGO) {
+            let fromSource = userConfig.maze1Algo.object.cellFromSource;
+            let fromDestination = userConfig.maze1Algo.object.cellFromDestination;
+            return this.getBidirectionalPath(fromSource, fromDestination);
+        } else if (this.mazeID === userConfig.maze2ID && userConfig.maze2Algo.name === BIDIRECTIONAL_ALGO) {
+            let fromSource = userConfig.maze2Algo.object.cellFromSource;
+            let fromDestination = userConfig.maze2Algo.object.cellFromDestination;
+            return this.getBidirectionalPath(fromSource, fromDestination);
+        }
+
         let destinations = Array.from(this.getDestinationCells());
         let destination = null;
         destinations.some(function (element, index) {
