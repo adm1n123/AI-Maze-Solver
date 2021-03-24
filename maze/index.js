@@ -60,6 +60,7 @@ class UserConfig {
     }
 
     generateMaze1() {
+
         let maze1Div = document.getElementById(this.maze1ID);
         if (maze1Div !== null)
             maze1Div.innerHTML = '';
@@ -68,6 +69,8 @@ class UserConfig {
             this.maze1 = null;
         }
         this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols, this.wallProb);
+        this.maze1.resetStatistics();
+        this.maze1.resetPath();
         this.maze1.createMaze();
         this.maze1.generateWalls();
         this.maze1.setSourceCell(this.source);
@@ -89,12 +92,18 @@ class UserConfig {
             this.maze2 = null;
         }
         this.maze2 = new Maze(this.maze2ID, this.mazeRows, this.mazeCols, this.wallProb);
+        this.maze2.resetStatistics();
+        this.maze2.resetPath();
         this.maze1.copyMaze(this.maze2);   // copy all the maze1 states to maze2. make sure maze1 is clean.
         this.initAlgoObject(this.maze2);
     }
 
     removeMaze2() {
-        this.maze2 = null;
+        if (this.maze2 !== null) {
+            this.maze2.resetStatistics();
+            this.maze2.resetPath();
+            this.maze2 = null;
+        }
         let maze2Div = document.getElementById(this.maze2ID);
         if (maze2Div !== null) {
             maze2Div.innerHTML = '';

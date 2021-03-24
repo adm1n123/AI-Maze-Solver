@@ -192,6 +192,8 @@ class Maze {
 
     cleanMaze() {
         // clear entire maze set each cell to EMPTY except source destinations.
+        this.resetStatistics();
+        this.resetPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if (this.maze[row][col].state !== SOURCE && this.maze[row][col].state !== DESTINATION) {
@@ -203,6 +205,8 @@ class Maze {
 
     resetMaze() {
         // clear entire maze set each cell to EMPTY except source destination and wall.
+        this.resetStatistics();
+        this.resetPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if (this.maze[row][col].state !== SOURCE &&
@@ -420,5 +424,27 @@ class Maze {
         var pathLength = document.getElementById("Path Length"+" "+this.mazeID);
         pathLength.value = path.length ;
     }
+
+    resetStatistics(){
+        
+        var notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
+        notVisitedCells.value = 0 ;
+
+       
+        var visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
+        visitedCells.value = 0 ;
+
+       
+        var exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
+        exploredCells.value = 0 ;
+        
+    }
+
+    resetPath(){
+
+        var pathLength = document.getElementById("Path Length"+" "+this.mazeID);
+        pathLength.value = 0 ;
+    }
+
 }
 
