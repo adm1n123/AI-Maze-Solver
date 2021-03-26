@@ -23,7 +23,7 @@ class UserConfig {
         }
 
         this.mazeRows = 20; // default
-        this.mazeCols = 20; // default
+        this.mazeCols = 40; // default since single maze is present.
         this.source = {     // default source
             row: 0,
             col: 0
@@ -46,9 +46,9 @@ class UserConfig {
         this.delay = 50;
     }
 
-    resizeMaze(size) {
-        this.mazeRows = size;
-        this.mazeCols = size;
+    resizeMaze(rows, cols) {
+        this.mazeRows = rows;
+        this.mazeCols = cols;
         this.source = {     // default source
             row: 0,
             col: 0
@@ -168,17 +168,16 @@ function isSourceDestinationSet() {
 function createMaze() {
     let mazeCountButton = document.getElementById("mazeCountButton");
     if (mazeCountButton.value === 'one') {
+        userConfig.resizeMaze(20, 40);
         userConfig.removeMaze2();
-        userConfig.maze1.resetMaze();
-        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.generateMaze1();
         userConfig.maze1.setIsSearching(false);
         mazeCountButton.innerHTML = 'Double Maze';
         mazeCountButton.value = 'two';
     } else {
-        userConfig.maze1.resetMaze();
-        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.resizeMaze(20, 20);
+        userConfig.generateMaze1();
         userConfig.generateMaze2();
-        userConfig.initAlgoObject(userConfig.maze2);
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
         mazeCountButton.innerHTML = 'Single Maze';
@@ -186,6 +185,7 @@ function createMaze() {
     }
     setVisualizeButton();
     userConfig.isRunning = false;
+    document.getElementById("selectMazeSize").selectedIndex = 0;
 }
 
 function generateMaze() {

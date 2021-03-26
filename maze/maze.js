@@ -110,9 +110,10 @@ class Maze {
     setDestinationCells(destinationList) {
         // set list of destination cells
         let array = Array.from(destinationList);
+        let self = this;
         array.forEach((destination) => {
-            this.maze[destination.row][destination.col].state = DESTINATION;
-            this.setCellState(this.maze[destination.row][destination.col], DESTINATION);
+            self.maze[destination.row][destination.col].state = DESTINATION;
+            self.setCellState(this.maze[destination.row][destination.col], DESTINATION);
         });
     }
 
