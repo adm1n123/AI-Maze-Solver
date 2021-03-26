@@ -70,7 +70,7 @@ class UserConfig {
         }
         this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols, this.wallProb);
         this.maze1.resetStatistics();
-        this.maze1.resetPath();
+        this.maze1.resetPathLength();
         this.maze1.createMaze();
         this.maze1.generateWalls();
         this.maze1.setSourceCell(this.source);
@@ -93,7 +93,7 @@ class UserConfig {
         }
         this.maze2 = new Maze(this.maze2ID, this.mazeRows, this.mazeCols, this.wallProb);
         this.maze2.resetStatistics();
-        this.maze2.resetPath();
+        this.maze2.resetPathLength();
         this.maze1.copyMaze(this.maze2);   // copy all the maze1 states to maze2. make sure maze1 is clean.
         this.initAlgoObject(this.maze2);
     }
@@ -101,7 +101,7 @@ class UserConfig {
     removeMaze2() {
         if (this.maze2 !== null) {
             this.maze2.resetStatistics();
-            this.maze2.resetPath();
+            this.maze2.resetPathLength();
             this.maze2 = null;
         }
         let maze2Div = document.getElementById(this.maze2ID);
@@ -287,12 +287,13 @@ async function visualize() {
             userConfig.maze1.setStatistics();
             await sleep(userConfig.delay);
         }
+        let drawn;
+        do {
+            drawn = userConfig.maze1.drawOnePathCell();
+            await sleep(userConfig.delay);
+        } while (drawn === true);
+
         if (userConfig.maze1.getIsSearching() === false) {
-            let path = userConfig.maze1.getPath();
-            for (const element of path) {
-                userConfig.maze1.setCellState(element, PATH);
-                await sleep(userConfig.delay);
-            }
             userConfig.maze1.setPath();
         } else {
             alert("Destination Unreachable !!!");
@@ -305,11 +306,6 @@ async function visualize() {
         let maze1Reachable = true;
         let maze2Reachable = true;
 
-        let maze1Path = [];
-        let maze2Path = [];
-        let maze1PathFound = false;
-        let maze2PathFound = false;
-
         while ((maze1Reachable === true && userConfig.maze1.getIsSearching() === true) ||
          (maze2Reachable === true && userConfig.maze2.getIsSearching() === true) ) {
             if(userConfig.maze1.getIsSearching() === true){
@@ -320,39 +316,22 @@ async function visualize() {
                 maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
                 userConfig.maze2.setStatistics();
             }
-
-            if (userConfig.maze1.getIsSearching() === false && maze1PathFound === false) {
-                maze1PathFound = true;
-                maze1Path = userConfig.maze1.getPath();
-            }
-            if (userConfig.maze2.getIsSearching() === false && maze2PathFound === false) {
-                maze2PathFound = true;
-                maze2Path = userConfig.maze2.getPath();
-            }
-
-            // draw path if any
-            if (maze1Path.length > 0) {
-                let pathCell = maze1Path.shift();
-                userConfig.maze1.setCellState(pathCell, PATH);
-            }
-            if (maze2Path.length > 0) {
-                let pathCell = maze2Path.shift();
-                userConfig.maze2.setCellState(pathCell, PATH);
-            }
+            // draw path if found.
+            userConfig.maze1.drawOnePathCell();
+            userConfig.maze2.drawOnePathCell();
             await sleep(userConfig.delay);
         }
-        while (maze1Path.length > 0 || maze2Path.length > 0) {
-            if (maze1Path.length > 0) {
-                let pathCell = maze1Path.shift();
-                userConfig.maze1.setCellState(pathCell, PATH);
-            }
-            if (maze2Path.length > 0) {
-                let pathCell = maze2Path.shift();
-                userConfig.maze2.setCellState(pathCell, PATH);
-            }
+        let drawn1;
+        let drawn2;
+        do {
+            drawn1 = userConfig.maze1.drawOnePathCell();
+            drawn2 = userConfig.maze2.drawOnePathCell();
             await sleep(userConfig.delay);
-        }
+        } while(drawn1 === true || drawn2 === true);
 
+        /*
+        TODO: set path length for each path.
+         */
         if (userConfig.maze1.getIsSearching() === false) {
             userConfig.maze1.setPath();
         }
@@ -390,12 +369,13 @@ async function oneStep() {
         userConfig.maze1.setStatistics();
         await sleep(userConfig.delay);
 
+        let drawn;
+        do {
+            drawn = userConfig.maze1.drawOnePathCell();
+            await sleep(userConfig.delay);
+        } while (drawn === true);
+
         if (userConfig.maze1.getIsSearching() === false) {
-            let path = userConfig.maze1.getPath();
-            for (const element of path) {
-                userConfig.maze1.setCellState(element, PATH);
-                await sleep(userConfig.delay);
-            }
             userConfig.maze1.setPath();
         } else if(reachable === false) {
             alert("Destination Unreachable !!!");
@@ -415,23 +395,20 @@ async function oneStep() {
             maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
             userConfig.maze2.setStatistics();
         }
-
         await sleep(userConfig.delay);
 
+        let drawn1;
+        let drawn2;
+        do {
+            drawn1 = userConfig.maze1.drawOnePathCell();
+            drawn2 = userConfig.maze2.drawOnePathCell();
+            await sleep(userConfig.delay);
+        } while(drawn1 === true || drawn2 === true);
+
         if (userConfig.maze1.getIsSearching() === false) {
-            let path = userConfig.maze1.getPath();
-            for (const element of path) {
-                userConfig.maze1.setCellState(element, PATH);
-                await sleep(userConfig.delay);
-            }
             userConfig.maze1.setPath();
         }
         if (userConfig.maze2.getIsSearching() === false) {
-            let path = userConfig.maze2.getPath();
-            for (const element of path) {
-                userConfig.maze2.setCellState(element, PATH);
-                await sleep(userConfig.delay);
-            }
             userConfig.maze2.setPath();
         }
         if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.

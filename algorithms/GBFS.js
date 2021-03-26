@@ -53,6 +53,8 @@ class GBFS {
                     mazeObject.setIsSearching(false);
                     element.heuristics.state = CLOSED;  // don't change color of destination.
                     self.closedSet.add(element);
+                    let path = mazeObject.getPath(element);
+                    mazeObject.addNewPath(path);
                     return true;
                 }
                 if (element.heuristics.state === NEW) {

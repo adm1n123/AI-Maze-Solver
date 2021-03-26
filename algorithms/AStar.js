@@ -54,6 +54,8 @@ class AStar {
                     mazeObject.setIsSearching(false);
                     element.heuristics.state = CLOSED;
                     self.closedSet.add(element);
+                    let path = mazeObject.getPath(element);
+                    mazeObject.addNewPath(path);
                     return true;
                 }
                 if (element.heuristics.state === NEW) {

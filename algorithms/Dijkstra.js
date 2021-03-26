@@ -42,6 +42,8 @@ class Dijkstra {
                     element.heuristics.parent = current;
                     element.heuristics.cost = current.heuristics.cost + 1;
                     self.closedSet.add(element);
+                    let path = mazeObject.getPath(element);
+                    mazeObject.addNewPath(path);
                     return true;
                 }
                 if (element.heuristics.state === NEW) {

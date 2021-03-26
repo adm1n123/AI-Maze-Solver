@@ -8,6 +8,9 @@ class Maze {
         this.isSearching = false;
         this.isGenerating = false;
         this.wallProb = wallProb ;
+        // all the paths will be stored in this.
+        this.path = [];
+        this.pathToDraw = [];
     }
 
     getMazeID() {
@@ -193,7 +196,8 @@ class Maze {
     cleanMaze() {
         // clear entire maze set each cell to EMPTY except source destinations.
         this.resetStatistics();
-        this.resetPath();
+        this.resetPathLength();
+        this.initPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 this.setCellState(this.maze[row][col], EMPTY);
@@ -207,7 +211,8 @@ class Maze {
     resetMaze() {
         // clear entire maze set each cell to EMPTY except source destination and wall.
         this.resetStatistics();
-        this.resetPath();
+        this.resetPathLength();
+        this.initPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if (this.maze[row][col].state !== WALL) {
@@ -319,15 +324,15 @@ class Maze {
         return path;
     }
 
-    getPath() {
+    getPath(fromDestination=null) {
         if (this.mazeID === userConfig.maze1ID && userConfig.maze1Algo.name === BIDIRECTIONAL_ALGO) {
-            let fromSource = userConfig.maze1Algo.object.cellFromSource;
-            let fromDestination = userConfig.maze1Algo.object.cellFromDestination;
-            return this.getBidirectionalPath(fromSource, fromDestination);
+            let source = userConfig.maze1Algo.object.cellFromSource;
+            let destination = userConfig.maze1Algo.object.cellFromDestination;
+            return this.getBidirectionalPath(source, destination);
         } else if (this.mazeID === userConfig.maze2ID && userConfig.maze2Algo.name === BIDIRECTIONAL_ALGO) {
-            let fromSource = userConfig.maze2Algo.object.cellFromSource;
-            let fromDestination = userConfig.maze2Algo.object.cellFromDestination;
-            return this.getBidirectionalPath(fromSource, fromDestination);
+            let source = userConfig.maze2Algo.object.cellFromSource;
+            let destination = userConfig.maze2Algo.object.cellFromDestination;
+            return this.getBidirectionalPath(source, destination);
         }
 
         let destinations = Array.from(this.getDestinationCells());
@@ -338,7 +343,10 @@ class Maze {
                 return true;
             }
         });
-
+        // if destination is given then start finding path from that destination.
+        if (fromDestination !== null) {
+            destination = fromDestination;
+        }
         let pathCell = destination.heuristics.parent;
         let path = []; // don't include source and destination in path.
         while (pathCell !== null && pathCell.state !== SOURCE) {
@@ -442,10 +450,34 @@ class Maze {
         
     }
 
-    resetPath(){
+    resetPathLength(){
 
         let pathLength = document.getElementById("Path Length"+" "+this.mazeID);
         pathLength.value = 0 ;
+    }
+
+    initPath() {
+        this.path = [];
+        this.pathToDraw = [];
+    }
+
+    addNewPath(path) {
+        this.path.push(path);
+        this.pathToDraw.push(path);
+    }
+
+    drawOnePathCell() { // make one cell of each path green.
+        let drawn = false;
+        if (this.pathToDraw.length > 0) {
+            for(let pathNumber = 0; pathNumber < this.pathToDraw.length; pathNumber += 1) {
+                if (this.pathToDraw[pathNumber].length > 0) {
+                    let pathCell = this.pathToDraw[pathNumber].shift();
+                    this.setCellState(pathCell, PATH);
+                    drawn = true;
+                }
+            }
+        }
+        return drawn;
     }
 
 }
