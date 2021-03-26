@@ -271,7 +271,7 @@ async function visualize() {
         setVisualizeButton();
         return;
     }
-    if (isPathDrawn() === true) return;
+
     if (isSourceDestinationSet() === false) return;     // if source and destination is not set return.
     setPauseButton();
     userConfig.isRunning = true;    // user is running.
@@ -305,38 +305,58 @@ async function visualize() {
         let maze1Reachable = true;
         let maze2Reachable = true;
 
+        let maze1Path = [];
+        let maze2Path = [];
+        let maze1PathFound = false;
+        let maze2PathFound = false;
+
         while ((maze1Reachable === true && userConfig.maze1.getIsSearching() === true) ||
-         (maze2Reachable === true && userConfig.maze1.getIsSearching() === true) ) {
+         (maze2Reachable === true && userConfig.maze2.getIsSearching() === true) ) {
             if(userConfig.maze1.getIsSearching() === true){
                 maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
                 userConfig.maze1.setStatistics();
             }
-            
-            if(userConfig.maze2.getIsSearching() === true)
-            {
+            if(userConfig.maze2.getIsSearching() === true) {
                 maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
                 userConfig.maze2.setStatistics();
             }
 
+            if (userConfig.maze1.getIsSearching() === false && maze1PathFound === false) {
+                maze1PathFound = true;
+                maze1Path = userConfig.maze1.getPath();
+            }
+            if (userConfig.maze2.getIsSearching() === false && maze2PathFound === false) {
+                maze2PathFound = true;
+                maze2Path = userConfig.maze2.getPath();
+            }
+
+            // draw path if any
+            if (maze1Path.length > 0) {
+                let pathCell = maze1Path.shift();
+                userConfig.maze1.setCellState(pathCell, PATH);
+            }
+            if (maze2Path.length > 0) {
+                let pathCell = maze2Path.shift();
+                userConfig.maze2.setCellState(pathCell, PATH);
+            }
+            await sleep(userConfig.delay);
+        }
+        while (maze1Path.length > 0 || maze2Path.length > 0) {
+            if (maze1Path.length > 0) {
+                let pathCell = maze1Path.shift();
+                userConfig.maze1.setCellState(pathCell, PATH);
+            }
+            if (maze2Path.length > 0) {
+                let pathCell = maze2Path.shift();
+                userConfig.maze2.setCellState(pathCell, PATH);
+            }
             await sleep(userConfig.delay);
         }
 
-        
         if (userConfig.maze1.getIsSearching() === false) {
-            let path = userConfig.maze1.getPath();
-            for (const element of path) {
-                userConfig.maze1.setCellState(element, PATH);
-                await sleep(userConfig.delay);
-            }
             userConfig.maze1.setPath();
         }
-        
         if (userConfig.maze2.getIsSearching() === false) {
-            let path = userConfig.maze2.getPath();
-            for (const element of path) {
-                userConfig.maze2.setCellState(element, PATH);
-                await sleep(userConfig.delay);
-            }
             userConfig.maze2.setPath();
         }
         if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
@@ -349,10 +369,7 @@ async function visualize() {
 }
 
 async function oneStep() {
-    // run one step of algo.
-    // get the name of algorithms from drop down
-    // initialize algorithm
-    if (isPathDrawn() === true) return;
+
     if (isSourceDestinationSet() === false) return;     // if source and destination is not set return.
     setVisualizeButton();
     userConfig.isRunning = true;
@@ -390,11 +407,15 @@ async function oneStep() {
         // run algorithms
         let maze1Reachable = true;
         let maze2Reachable = true;
+        if (userConfig.maze1.isPathDrawn() === false) {
+            maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+            userConfig.maze1.setStatistics();
+        }
+        if (userConfig.maze2.isPathDrawn() === false) {
+            maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
+            userConfig.maze2.setStatistics();
+        }
 
-        maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
-        userConfig.maze1.setStatistics();
-        maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
-        userConfig.maze2.setStatistics();
         await sleep(userConfig.delay);
 
         if (userConfig.maze1.getIsSearching() === false) {
