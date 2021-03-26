@@ -207,19 +207,7 @@ function selectSize(value) {
         return;
     }
 
-    let size = null;
-    if (value === '25') {
-        size = 25;
-    } else if (value === '20') {
-        size = 20;
-    } else if (value === '15') {
-        size = 15;
-    } else if (value === '10') {
-        size = 10;
-    } else {
-        return;
-    }
-   
+    let size = Number.parseInt(value);
     if (userConfig.maze2 !== null) {
         userConfig.resizeMaze(size);
         userConfig.generateMaze1();
