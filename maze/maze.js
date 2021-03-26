@@ -196,11 +196,12 @@ class Maze {
         this.resetPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
-                if (this.maze[row][col].state !== SOURCE && this.maze[row][col].state !== DESTINATION) {
-                    this.setCellState(this.maze[row][col], EMPTY);
-                }
+                this.setCellState(this.maze[row][col], EMPTY);
             }
         }
+        // set the source and destination from user config it might be changed because of any bug or user input selection.
+        this.setSourceCell(userConfig.source);
+        this.setDestinationCells(userConfig.destinationList);
     }
 
     resetMaze() {
@@ -209,13 +210,14 @@ class Maze {
         this.resetPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
-                if (this.maze[row][col].state !== SOURCE &&
-                    this.maze[row][col].state !== DESTINATION &&
-                    this.maze[row][col].state !== WALL) {
+                if (this.maze[row][col].state !== WALL) {
                     this.setCellState(this.maze[row][col], EMPTY);
                 }
             }
         }
+        // set the source and destination from user config it might be changed because of any bug or user input selection.
+        this.setSourceCell(userConfig.source);
+        this.setDestinationCells(userConfig.destinationList);
     }
 
     clearPath() {
@@ -405,44 +407,44 @@ class Maze {
 
     setStatistics(){
         
-        let newStateCells = this.getNewStateCells(); 
-        var notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
+        let newStateCells = this.getNewStateCells();
+        let notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
         notVisitedCells.value = newStateCells.length ;
 
         let openStateCells = this.getOpenStateCells();
-        var visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
+        let visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
         visitedCells.value = openStateCells.length ;
 
         let closedStateCells = this.getClosedStateCells();
-        var exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
+        let exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
         exploredCells.value = closedStateCells.length ;
         
     }
 
     setPath(){
         let path = this.getPath();
-        var pathLength = document.getElementById("Path Length"+" "+this.mazeID);
+        let pathLength = document.getElementById("Path Length"+" "+this.mazeID);
         pathLength.value = path.length ;
     }
 
     resetStatistics(){
-        
-        var notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
+
+        let notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
         notVisitedCells.value = 0 ;
 
-       
-        var visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
+
+        let visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
         visitedCells.value = 0 ;
 
-       
-        var exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
+
+        let exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
         exploredCells.value = 0 ;
         
     }
 
     resetPath(){
 
-        var pathLength = document.getElementById("Path Length"+" "+this.mazeID);
+        let pathLength = document.getElementById("Path Length"+" "+this.mazeID);
         pathLength.value = 0 ;
     }
 
