@@ -182,7 +182,7 @@ class Maze {
         }
     }
 
-    flipCellState(cell) {   // flip emtpy to wall, and wall to empty.
+    flipCellState(cell) {   // flip empty to wall, and wall to empty.
         if (cell.state === EMPTY)
             this.setCellState(cell, WALL)
         else
@@ -212,6 +212,12 @@ class Maze {
         this.initPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
+                this.maze[row][col] = {
+                    state: EMPTY,
+                    row: row,
+                    col: col,
+                    heuristics: null     // this object stores the statistics of cell used only in algorithms
+                };
                 this.setCellState(this.maze[row][col], EMPTY);
             }
         }
@@ -228,6 +234,12 @@ class Maze {
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if (this.maze[row][col].state !== WALL) {
+                    this.maze[row][col] = {
+                        state: EMPTY,
+                        row: row,
+                        col: col,
+                        heuristics: null     // this object stores the statistics of cell used only in algorithms
+                    };
                     this.setCellState(this.maze[row][col], EMPTY);
                 }
             }

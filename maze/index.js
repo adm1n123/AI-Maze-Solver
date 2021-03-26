@@ -86,7 +86,6 @@ class UserConfig {
 
     generateMaze2() {
         // maze1 is by default created so just copy the maze1.
-        this.maze1.resetMaze(); // clear all visited and path cells.
         this.removeMaze2(); // remove and create new maze2 object.
         if (this.maze2 !== null) {
             this.maze2 = null;
