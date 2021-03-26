@@ -20,9 +20,15 @@ class GBFS {
                     state: NEW,
                     f: Number.MAX_SAFE_INTEGER,
                     g: 0,
-                    h: this.hFunction.hScore(mazeObject.maze[row][col], mazeObject), // get the h value. h value is fixed.
+                    h: Number.MAX_SAFE_INTEGER, // get the h value. h value is fixed.
                     parent: null    // cell is reached from parent with min cost.
                 };
+            }
+        }
+        // calculate h value after initializing each object since destination cells heuristics.state is used in hScore().
+        for (let row = 0; row < mazeObject.rows; row += 1) {
+            for (let col = 0; col < mazeObject.cols; col += 1) {
+                mazeObject.maze[row][col].heuristics.h = this.hFunction.hScore(mazeObject.maze[row][col], mazeObject);// get the h value. h value is fixed. all destination h = 0.
             }
         }
 

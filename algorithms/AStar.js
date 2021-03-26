@@ -20,9 +20,14 @@ class AStar {
                     state: NEW,
                     f: Number.MAX_SAFE_INTEGER,
                     g: Number.MAX_SAFE_INTEGER,
-                    h: this.hFunction.hScore(mazeObject.maze[row][col], mazeObject), // get the h value. h value is fixed. all destination h = 0.
+                    h: Number.MAX_SAFE_INTEGER,
                     parent: null    // cell is reached from parent with min cost.
                 };
+            }
+        }
+        for (let row = 0; row < mazeObject.rows; row += 1) {
+            for (let col = 0; col < mazeObject.cols; col += 1) {
+                mazeObject.maze[row][col].heuristics.h = this.hFunction.hScore(mazeObject.maze[row][col], mazeObject);// get the h value. h value is fixed. all destination h = 0.
             }
         }
 
