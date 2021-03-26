@@ -73,6 +73,7 @@ class AStar {
                         if (mazeObject.isAllDestinationsReached() === true) {
                             self.isAlgoOver = true;
                             mazeObject.setIsSearching(false);
+                            element.heuristics.state = CLOSED;
                             return true;
                         }
                     }
