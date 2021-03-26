@@ -131,7 +131,7 @@ class Maze {
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
                 if (this.maze[row][col].state === DESTINATION &&
-                    this.maze[row][col].heuristics.state !== CLOSED) {
+                    this.maze[row][col].heuristics.state === NEW) {
                     return false;
                 }
             }
