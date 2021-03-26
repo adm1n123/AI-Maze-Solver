@@ -53,6 +53,11 @@ class Bidirectional {
             mazeObject.setIsSearching(false);
             return;
         }
+        if (mazeObject.getDestinationCells().size > 1) {
+            this.isAlgoOver = true;
+            alert("!!! Bidirectional supports only one destination !!!");
+            return;
+        }
 
         let sourceFlag = false;
         let destinationFlag = false;
