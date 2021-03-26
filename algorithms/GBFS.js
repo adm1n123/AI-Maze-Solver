@@ -20,7 +20,7 @@ class GBFS {
                     state: NEW,
                     f: Number.MAX_SAFE_INTEGER,
                     g: 0,
-                    h: this.hFunction.hScore(mazeObject.maze[row][col]), // get the h value. h value is fixed.
+                    h: this.hFunction.hScore(mazeObject.maze[row][col], mazeObject), // get the h value. h value is fixed.
                     parent: null    // cell is reached from parent with min cost.
                 };
             }
@@ -44,32 +44,36 @@ class GBFS {
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
             this.closedSet.add(current);
 
-            if (current.state === DESTINATION) {    // unexpected event just return.
-                mazeObject.setIsSearching(false);
-                return;
-            }
-            if (current.state !== SOURCE)
+            // if (current.state === DESTINATION) {    // unexpected event just return.
+            //     mazeObject.setIsSearching(false);
+            //     return;
+            // }
+            if (current.state !== SOURCE && current.state !== DESTINATION)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
+
+            if (current.state === DESTINATION) {
+                this.initHeuristicsForNextDestination(mazeObject);
+            }
 
             let neighbors = this.getAllNeighbours(current, mazeObject);
             let self = this;
             neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
-                if (mazeObject.isDestinationCell(element) === true) {   // path found
-                    element.heuristics.f = element.heuristics.h;
-                    element.heuristics.parent = current;
-                    mazeObject.setIsSearching(false);
-                    element.heuristics.state = CLOSED;  // don't change color of destination.
-                    self.closedSet.add(element);
-                    let path = mazeObject.getPath(element);
-                    mazeObject.addNewPath(path);
-                    return true;
-                }
                 if (element.heuristics.state === NEW) {
                     element.heuristics.state = OPEN;
                     element.heuristics.f = element.heuristics.h;
                     element.heuristics.parent = current;
                     self.openSet.add(element);
-                    mazeObject.setCellState(element, OPEN);
+                    if (mazeObject.isDestinationCell(element) === false) {  // don't change color of destination.
+                        mazeObject.setCellState(element, OPEN);
+                    } else {    // process destination.
+                        let path = mazeObject.getPath(element);
+                        mazeObject.addNewPath(path);
+                        if (mazeObject.isAllDestinationsReached() === true) {
+                            self.isAlgoOver = true;
+                            mazeObject.setIsSearching(false);
+                            return true;
+                        }
+                    }
                 } else if (element.heuristics.state === CLOSED) {
                     // heuristic value is fixed for cells do nothing.
                 } else if (element.heuristics.state === OPEN) {
@@ -113,4 +117,17 @@ class GBFS {
         });
         return minCell;
     }
+
+    initHeuristicsForNextDestination(mazeObject) {      // update h value for next Destination(NEW/OPEN state).
+        for (let row = 0; row < mazeObject.rows; row += 1) {
+            for (let col = 0; col < mazeObject.cols; col += 1) {
+                let cell = mazeObject.maze[row][col];
+                if (cell.state === SOURCE || cell.state === DESTINATION) continue;  // h value for destination is 0 already.
+                if (cell.heuristics.state === NEW || cell.heuristics.state === OPEN) {
+                    cell.heuristics.h =  this.hFunction.hScore(cell, mazeObject);
+                }
+            }
+        }
+    }
+
 }

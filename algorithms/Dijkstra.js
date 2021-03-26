@@ -35,16 +35,6 @@ class Dijkstra {
             if (current.state !== SOURCE && current.state !== DESTINATION)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
 
-            if (current.state === DESTINATION) {
-                let path = mazeObject.getPath(current);
-                mazeObject.addNewPath(path);
-                if (mazeObject.isAllDestinationsReached() === true) {
-                    this.isAlgoOver = true;
-                    mazeObject.setIsSearching(false);
-                    return;
-                }
-            }
-
             let neighbors = this.getUnvisitedNeighbours(current, mazeObject);
             let self = this;
             neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
@@ -52,8 +42,17 @@ class Dijkstra {
                     element.heuristics.state = OPEN;
                     element.heuristics.parent = current;
                     self.openSet.add(element);
-                    if (mazeObject.isDestinationCell(element) === false)    // don't change color of destination.
+                    if (mazeObject.isDestinationCell(element) === false) {  // don't change color of destination.
                         mazeObject.setCellState(element, OPEN);
+                    } else {    // process destination.
+                        let path = mazeObject.getPath(element);
+                        mazeObject.addNewPath(path);
+                        if (mazeObject.isAllDestinationsReached() === true) {
+                            self.isAlgoOver = true;
+                            mazeObject.setIsSearching(false);
+                            return true;
+                        }
+                    }
                 }
                 if (element.heuristics.cost > current.heuristics.cost + 1) {
                     element.heuristics.cost = current.heuristics.cost + 1;
