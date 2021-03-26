@@ -3,6 +3,7 @@ class Dijkstra {
     constructor(mazeObject) {
         this.openSet = new Set();
         this.closedSet = new Set();
+        this.isAlgoOver = false;
 
         for (let row = 0; row < mazeObject.rows; row += 1) {
             for (let col = 0; col < mazeObject.cols; col += 1) {
@@ -20,46 +21,47 @@ class Dijkstra {
     }
 
     runStep(mazeObject) {
+        if (this.isAlgoOver === true) {
+            mazeObject.setIsSearching(false);
+            return;
+        }
+
         if (this.openSet.size > 0) {
             let current = this.minCostCell();
             this.openSet.delete(current);
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
             this.closedSet.add(current);
 
-            if (current.state === DESTINATION) {    // unexpected event just return.
-                mazeObject.setIsSearching(false);
-                return true;
-            }
-            if (current.state !== SOURCE)
+            if (current.state !== SOURCE && current.state !== DESTINATION)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
+
+            if (current.state === DESTINATION) {
+                let path = mazeObject.getPath(current);
+                mazeObject.addNewPath(path);
+                if (mazeObject.isAllDestinationsReached() === true) {
+                    this.isAlgoOver = true;
+                    mazeObject.setIsSearching(false);
+                    return;
+                }
+            }
 
             let neighbors = this.getUnvisitedNeighbours(current, mazeObject);
             let self = this;
             neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
-                if (mazeObject.isDestinationCell(element) === true) {   // path found
-                    mazeObject.setIsSearching(false);
-                    element.heuristics.state = CLOSED;
-                    element.heuristics.parent = current;
-                    element.heuristics.cost = current.heuristics.cost + 1;
-                    self.closedSet.add(element);
-                    let path = mazeObject.getPath(element);
-                    mazeObject.addNewPath(path);
-                    return true;
-                }
                 if (element.heuristics.state === NEW) {
                     element.heuristics.state = OPEN;
                     element.heuristics.parent = current;
                     self.openSet.add(element);
-                    mazeObject.setCellState(element, OPEN);
+                    if (mazeObject.isDestinationCell(element) === false)    // don't change color of destination.
+                        mazeObject.setCellState(element, OPEN);
                 }
                 if (element.heuristics.cost > current.heuristics.cost + 1) {
                     element.heuristics.cost = current.heuristics.cost + 1;
                     element.heuristics.parent = current;
                 }
             });
-            return true;
         } else {
-            return false;
+            this.isAlgoOver = true;
         }
     }
 
