@@ -206,17 +206,17 @@ function selectSize(value) {
         alert("!!! Algorithm is running, Set maze size before visualization !!!");
         return;
     }
-
     let size = Number.parseInt(value);
-    if (userConfig.maze2 !== null) {
-        userConfig.resizeMaze(size);
+    if (userConfig.maze2 === null) {
+        userConfig.resizeMaze(size, Math.floor(size * 2));
+        userConfig.generateMaze1();
+    } else {
+        userConfig.resizeMaze(size, size);
         userConfig.generateMaze1();
         userConfig.generateMaze2();
-        
-    } else if  (userConfig.maze1 !== null) {
-        userConfig.resizeMaze(size);
-        userConfig.generateMaze1();
     }
+
+
 }
 
 
