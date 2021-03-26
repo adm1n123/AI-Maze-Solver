@@ -3,6 +3,8 @@ class GBFS {
     constructor(mazeObject, heuristic) {
         this.openSet = new Set();
         this.closedSet = new Set();
+        this.isAlgoOver = false;
+
         if (heuristic === GBFS_M_ALGO)
             this.hFunction = new Manhattan();
         else if (heuristic === GBFS_E_ALGO)
@@ -31,6 +33,11 @@ class GBFS {
     }
 
     runStep(mazeObject) {
+        if (this.isAlgoOver === true) {
+            mazeObject.setIsSearching(false);
+            return;
+        }
+
         if (this.openSet.size > 0) {
             let current = this.minCostCell();
             this.openSet.delete(current);
@@ -39,7 +46,7 @@ class GBFS {
 
             if (current.state === DESTINATION) {    // unexpected event just return.
                 mazeObject.setIsSearching(false);
-                return true;
+                return;
             }
             if (current.state !== SOURCE)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
@@ -69,9 +76,8 @@ class GBFS {
                     // heuristic value is fixed for cells do nothing.
                 }
             });
-            return true;
         } else {
-            return false;
+            this.isAlgoOver = true;
         }
     }
 

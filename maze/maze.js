@@ -127,6 +127,18 @@ class Maze {
         return false;
     }
 
+    isAllDestinationsReached() {
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state === DESTINATION &&
+                    this.maze[row][col].heuristics.state !== CLOSED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     clearDestinationCells() {
         // clear all the destination cells
     }
@@ -472,7 +484,8 @@ class Maze {
             for(let pathNumber = 0; pathNumber < this.pathToDraw.length; pathNumber += 1) {
                 if (this.pathToDraw[pathNumber].length > 0) {
                     let pathCell = this.pathToDraw[pathNumber].shift();
-                    this.setCellState(pathCell, PATH);
+                    if (pathCell.state !== DESTINATION)     // don't change color of destination.
+                        this.setCellState(pathCell, PATH);
                     drawn = true;
                 }
             }

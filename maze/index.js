@@ -281,39 +281,35 @@ async function visualize() {
     if (userConfig.maze2 === null) {    // only maze1 is present.
         userConfig.maze1.setIsSearching(true);
         // run algorithms
-        let reachable = true;
-        while (userConfig.maze1.getIsSearching() === true && reachable === true) {
-            reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+        while (userConfig.maze1.getIsSearching() === true && userConfig.maze1Algo.object.isAlgoOver === false) {
+            userConfig.maze1Algo.object.runStep(userConfig.maze1);
             userConfig.maze1.setStatistics();
+            userConfig.maze1.drawOnePathCell();
             await sleep(userConfig.delay);
         }
-        let drawn;
-        do {
-            drawn = userConfig.maze1.drawOnePathCell();
+        while(userConfig.maze1.drawOnePathCell() === true) {
             await sleep(userConfig.delay);
-        } while (drawn === true);
+        }
 
         if (userConfig.maze1.getIsSearching() === false) {
             userConfig.maze1.setPath();
-        } else {
-            alert("Destination Unreachable !!!");
         }
+
+        alertIfUnreachable();
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
         userConfig.maze1.setIsSearching(true);
         userConfig.maze2.setIsSearching(true);
         // run algorithms
-        let maze1Reachable = true;
-        let maze2Reachable = true;
 
-        while ((maze1Reachable === true && userConfig.maze1.getIsSearching() === true) ||
-         (maze2Reachable === true && userConfig.maze2.getIsSearching() === true) ) {
+        while (userConfig.maze1.getIsSearching() === true && userConfig.maze1Algo.object.isAlgoOver === false ||
+        userConfig.maze2.getIsSearching() === true && userConfig.maze2Algo.object.isAlgoOver === false) {
             if(userConfig.maze1.getIsSearching() === true){
-                maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+                userConfig.maze1Algo.object.runStep(userConfig.maze1);
                 userConfig.maze1.setStatistics();
             }
             if(userConfig.maze2.getIsSearching() === true) {
-                maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
+                userConfig.maze2Algo.object.runStep(userConfig.maze2);
                 userConfig.maze2.setStatistics();
             }
             // draw path if found.
@@ -321,13 +317,9 @@ async function visualize() {
             userConfig.maze2.drawOnePathCell();
             await sleep(userConfig.delay);
         }
-        let drawn1;
-        let drawn2;
-        do {
-            drawn1 = userConfig.maze1.drawOnePathCell();
-            drawn2 = userConfig.maze2.drawOnePathCell();
+        while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) {
             await sleep(userConfig.delay);
-        } while(drawn1 === true || drawn2 === true);
+        }
 
         /*
         TODO: set path length for each path.
@@ -338,9 +330,8 @@ async function visualize() {
         if (userConfig.maze2.getIsSearching() === false) {
             userConfig.maze2.setPath();
         }
-        if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
-            alert("Destination Unreachable !!!");
-        }
+
+        alertIfUnreachable();
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
     }
@@ -364,46 +355,35 @@ async function oneStep() {
     if (userConfig.maze2 === null) {    // only maze1 is present.
         userConfig.maze1.setIsSearching(true);
         // run algorithms
-
-        let reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
+        userConfig.maze1Algo.object.runStep(userConfig.maze1);
         userConfig.maze1.setStatistics();
         await sleep(userConfig.delay);
 
-        let drawn;
-        do {
-            drawn = userConfig.maze1.drawOnePathCell();
+        while(userConfig.maze1.drawOnePathCell() === true) {
             await sleep(userConfig.delay);
-        } while (drawn === true);
+        }
 
         if (userConfig.maze1.getIsSearching() === false) {
             userConfig.maze1.setPath();
-        } else if(reachable === false) {
-            alert("Destination Unreachable !!!");
         }
+
+        alertIfUnreachable();
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
         userConfig.maze1.setIsSearching(true);
         userConfig.maze2.setIsSearching(true);
         // run algorithms
-        let maze1Reachable = true;
-        let maze2Reachable = true;
-        if (userConfig.maze1.isPathDrawn() === false) {
-            maze1Reachable = userConfig.maze1Algo.object.runStep(userConfig.maze1);
-            userConfig.maze1.setStatistics();
-        }
-        if (userConfig.maze2.isPathDrawn() === false) {
-            maze2Reachable = userConfig.maze2Algo.object.runStep(userConfig.maze2);
-            userConfig.maze2.setStatistics();
-        }
+        userConfig.maze1Algo.object.runStep(userConfig.maze1);
+        userConfig.maze1.setStatistics();
+
+        userConfig.maze2Algo.object.runStep(userConfig.maze2);
+        userConfig.maze2.setStatistics();
+
         await sleep(userConfig.delay);
 
-        let drawn1;
-        let drawn2;
-        do {
-            drawn1 = userConfig.maze1.drawOnePathCell();
-            drawn2 = userConfig.maze2.drawOnePathCell();
+        while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) {
             await sleep(userConfig.delay);
-        } while(drawn1 === true || drawn2 === true);
+        }
 
         if (userConfig.maze1.getIsSearching() === false) {
             userConfig.maze1.setPath();
@@ -411,15 +391,25 @@ async function oneStep() {
         if (userConfig.maze2.getIsSearching() === false) {
             userConfig.maze2.setPath();
         }
-        if (maze1Reachable === false || maze2Reachable === false) { // if destination unreachable both algo must have visited same number of cells.
-            alert("Destination Unreachable !!!");
-        }
+
+        alertIfUnreachable();
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
     }
 }
 
-
+function alertIfUnreachable() {
+    if(userConfig.maze1 !== null &&
+        userConfig.maze1Algo.object.isAlgoOver === true &&
+        userConfig.maze1.path.length === 0) {
+        alert("Destination Unreachable !!!");
+    }
+    if(userConfig.maze2 !== null &&
+        userConfig.maze2Algo.object.isAlgoOver === true &&
+        userConfig.maze2.path.length === 0) {
+        alert("Destination Unreachable !!!");
+    }
+}
 
 
 

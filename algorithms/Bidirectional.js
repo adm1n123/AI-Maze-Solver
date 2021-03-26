@@ -15,6 +15,8 @@ class Bidirectional {
         this.cellFromSource = null;
         this.cellFromDestination = null;
 
+        this.isAlgoOver = false;
+
         for (let row = 0; row < mazeObject.rows; row += 1) {
             for (let col = 0; col < mazeObject.cols; col += 1) {
                 mazeObject.maze[row][col].heuristics = {
@@ -47,6 +49,11 @@ class Bidirectional {
     }
 
     runStep(mazeObject) {
+        if (this.isAlgoOver === true) {
+            mazeObject.setIsSearching(false);
+            return;
+        }
+
         let sourceFlag = false;
         let destinationFlag = false;
         // run from source.
@@ -57,10 +64,6 @@ class Bidirectional {
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
             this.fromSource.closedSet.add(current);
 
-            // if (current.state === DESTINATION) {    // unexpected event just return.
-            //     mazeObject.setIsSearching(false);
-            //     return true;
-            // }
             if (current.state !== SOURCE)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
 
@@ -73,6 +76,7 @@ class Bidirectional {
                     mazeObject.setIsSearching(false);
                     let path = mazeObject.getPath();
                     mazeObject.addNewPath(path);
+                    self.isAlgoOver = true;
                     return true;
                 }
                 if (element.heuristics.state === NEW) {
@@ -102,8 +106,8 @@ class Bidirectional {
                     }
                 }
             });
-            if (mazeObject.getIsSearching() === false)  // path found. no need to run for destination.
-                return true;
+            if (this.isAlgoOver === true)  // path found. no need to run for destination.
+                return;
         }
         // run from destination.
         if (this.fromDestination.openSet.size > 0) {
@@ -113,10 +117,6 @@ class Bidirectional {
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
             this.fromDestination.closedSet.add(current);
 
-            // if (current.state === DESTINATION) {    // unexpected event just return.
-            //     mazeObject.setIsSearching(false);
-            //     return true;
-            // }
             if (current.state !== DESTINATION)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
 
@@ -127,6 +127,7 @@ class Bidirectional {
                     self.cellFromSource = element;
                     self.cellFromDestination = current;
                     mazeObject.setIsSearching(false);
+                    self.isAlgoOver = true;
                     return true;
                 }
                 if (element.heuristics.state === NEW) {
@@ -156,10 +157,10 @@ class Bidirectional {
                     }
                 }
             });
-            if (mazeObject.getIsSearching() === false)  // path found.
-                return true;
         }
-        return sourceFlag === true || destinationFlag === true;     // if any one run for step return true.
+        if (sourceFlag === false || destinationFlag === false) {
+            this.isAlgoOver = true;
+        }
     }
 
     getAllNeighbours(cell, mazeObject) { // return neighbours with mentioned state.
