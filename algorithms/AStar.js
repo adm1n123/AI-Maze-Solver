@@ -52,10 +52,6 @@ class AStar {
             if (current.state !== SOURCE && current.state !== DESTINATION)
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
 
-            if (current.state === DESTINATION) {
-                this.initHeuristicsForNextDestination(mazeObject);
-            }
-
             let neighbors = this.getAllNeighbours(current, mazeObject);
             let self = this;
             neighbors.some(function (element, index) { // some() stops if true is returned. forEach never stops
@@ -70,6 +66,7 @@ class AStar {
                     } else {    // process destination.
                         let path = mazeObject.getPath(element);
                         mazeObject.addNewPath(path);
+                        self.initHeuristicsForNextDestination(mazeObject);
                         if (mazeObject.isAllDestinationsReached() === true) {
                             self.isAlgoOver = true;
                             mazeObject.setIsSearching(false);
@@ -140,6 +137,7 @@ class AStar {
                 if (cell.state === SOURCE || cell.state === DESTINATION) continue;  // h value for destination is 0 already.
                 if (cell.heuristics.state === NEW || cell.heuristics.state === OPEN) {
                     cell.heuristics.h =  this.hFunction.hScore(cell, mazeObject);
+                    cell.heuristics.f = cell.heuristics.g + cell.heuristics.h
                 }
             }
         }
@@ -153,7 +151,7 @@ class Euclidean {
         let minH = Number.MAX_SAFE_INTEGER;
 
         array.forEach((i) => {
-            if (i.heuristics.state === CLOSED)  // don't include closed destinations for new distance.
+            if (i.heuristics.state === CLOSED || i.heuristics.state === OPEN)  // don't include closed destinations for new distance.
                 return;
             let h = Math.sqrt(Math.pow(i.row - cell.row, 2) + Math.pow(i.col - cell.col, 2));
             if (h < minH) {
@@ -170,7 +168,7 @@ class Manhattan {
         let minH = Number.MAX_SAFE_INTEGER;
 
         array.forEach((i) => {
-            if (i.heuristics.state === CLOSED)  // don't include closed destinations for new distance.
+            if (i.heuristics.state === CLOSED || i.heuristics.state === OPEN)  // don't include closed destinations for new distance.
                 return;
             let h = Math.abs(i.row - cell.row) + Math.abs(i.col - cell.col);
             if (h < minH) {
@@ -186,7 +184,7 @@ class Diagonal {
         let minH = Number.MAX_SAFE_INTEGER;
 
         array.forEach((i) => {
-            if (i.heuristics.state === CLOSED)  // don't include closed destinations for new distance.
+            if (i.heuristics.state === CLOSED || i.heuristics.state === OPEN)  // don't include closed destinations for new distance.
                 return;
             let h = Math.max(Math.abs(i.row - cell.row), Math.abs(i.col - cell.col));
             if (h < minH) {

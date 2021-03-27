@@ -6,11 +6,11 @@ class GBFS {
         this.isAlgoOver = false;
 
         if (heuristic === GBFS_M_ALGO)
-            this.hFunction = new Manhattan();
+            this.hFunction = new ManhattanGBFS();
         else if (heuristic === GBFS_E_ALGO)
-            this.hFunction = new Euclidean();
+            this.hFunction = new EuclideanGBFS();
         else if (heuristic === GBFS_D_ALGO)
-            this.hFunction = new Diagonal();
+            this.hFunction = new DiagonalGBFS();
         else
             alert("Error setting heuristic function");
 
@@ -58,7 +58,7 @@ class GBFS {
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
 
             if (current.state === DESTINATION) {
-                this.initHeuristicsForNextDestination(mazeObject);
+
             }
 
             let neighbors = this.getAllNeighbours(current, mazeObject);
@@ -74,6 +74,7 @@ class GBFS {
                     } else {    // process destination.
                         let path = mazeObject.getPath(element);
                         mazeObject.addNewPath(path);
+                        self.initHeuristicsForNextDestination(mazeObject);  // this is reached init for next closer destination.
                         if (mazeObject.isAllDestinationsReached() === true) {
                             self.isAlgoOver = true;
                             mazeObject.setIsSearching(false);
@@ -132,9 +133,60 @@ class GBFS {
                 if (cell.state === SOURCE || cell.state === DESTINATION) continue;  // h value for destination is 0 already.
                 if (cell.heuristics.state === NEW || cell.heuristics.state === OPEN) {
                     cell.heuristics.h =  this.hFunction.hScore(cell, mazeObject);
+                    cell.heuristics.f = cell.heuristics.h
                 }
             }
         }
     }
 
+}
+
+class EuclideanGBFS {
+    hScore(cell, mazeObject) {
+        let array = Array.from(mazeObject.getDestinationCells());
+        let minH = Number.MAX_SAFE_INTEGER;
+
+        array.forEach((i) => {
+            if (i.heuristics.state === CLOSED || i.heuristics.state === OPEN)  // don't include closed destinations for new distance.
+                return;
+            let h = Math.sqrt(Math.pow(i.row - cell.row, 2) + Math.pow(i.col - cell.col, 2));
+            if (h < minH) {
+                minH = h;
+            }
+        });
+        return minH;
+    }
+}
+
+class ManhattanGBFS {
+    hScore(cell, mazeObject) {
+        let array = Array.from(mazeObject.getDestinationCells());
+        let minH = Number.MAX_SAFE_INTEGER;
+
+        array.forEach((i) => {
+            if (i.heuristics.state === CLOSED || i.heuristics.state === OPEN)  // don't include closed destinations for new distance.
+                return;
+            let h = Math.abs(i.row - cell.row) + Math.abs(i.col - cell.col);
+            if (h < minH) {
+                minH = h;
+            }
+        });
+        return minH;
+    }
+}
+class DiagonalGBFS {
+    hScore(cell, mazeObject) {
+        let array = Array.from(mazeObject.getDestinationCells());
+        let minH = Number.MAX_SAFE_INTEGER;
+
+        array.forEach((i) => {
+            if (i.heuristics.state === CLOSED || i.heuristics.state === OPEN)  // don't include closed destinations for new distance.
+                return;
+            let h = Math.max(Math.abs(i.row - cell.row), Math.abs(i.col - cell.col));
+            if (h < minH) {
+                minH = h;
+            }
+        });
+        return minH;
+    }
 }
