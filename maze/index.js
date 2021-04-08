@@ -316,7 +316,7 @@ async function visualize() {
             userConfig.maze2.drawOnePathCell();
             await sleep(userConfig.delay);
         }
-        while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) {
+        while(userConfig.maze1.drawOnePathCell() === true && userConfig.maze2.drawOnePathCell() === true) {
             await sleep(userConfig.delay);
         }
 
@@ -380,7 +380,7 @@ async function oneStep() {
 
         await sleep(userConfig.delay);
 
-        while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) {
+        while(userConfig.maze1.drawOnePathCell() === true && userConfig.maze2.drawOnePathCell() === true) {
             await sleep(userConfig.delay);
         }
 
