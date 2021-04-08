@@ -316,7 +316,10 @@ async function visualize() {
             userConfig.maze2.drawOnePathCell();
             await sleep(userConfig.delay);
         }
-        while(userConfig.maze1.drawOnePathCell() === true && userConfig.maze2.drawOnePathCell() === true) {
+        while(userConfig.maze1.drawOnePathCell() === true && userConfig.maze2.drawOnePathCell() === true) { // draw in both
+            await sleep(userConfig.delay);
+        }
+        while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) { // draw in any one
             await sleep(userConfig.delay);
         }
 
@@ -380,7 +383,10 @@ async function oneStep() {
 
         await sleep(userConfig.delay);
 
-        while(userConfig.maze1.drawOnePathCell() === true && userConfig.maze2.drawOnePathCell() === true) {
+        while(userConfig.maze1.drawOnePathCell() === true && userConfig.maze2.drawOnePathCell() === true) { // draw in both
+            await sleep(userConfig.delay);
+        }
+        while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) { // draw in any one
             await sleep(userConfig.delay);
         }
 

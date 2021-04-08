@@ -31,8 +31,21 @@
         <div class="row">
             <div class="col-12">
                 <span>AI Maze Solver</span>
-                <!--<button onclick="Test();">Test</button>-->
-                <button class="btn btn-primary" onclick="generateMaze();">Generate</button>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="generateMaze();">Generate</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <button class="dropdown-item btn btn-primary" onclick="generateBFSKiller();">BFS Killer</button>
+                        <button class="dropdown-item btn btn-primary" onclick="generateDFSKiller();">DFS Killer</button>
+                        <button class="dropdown-item btn btn-primary" onclick="generateDijkstraKiller();">Dijkstra Killer</button>
+                        <button class="dropdown-item btn btn-primary" onclick="generateGBFSKiller();">GBFS Killer</button>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </div>
+
                 <button class="btn btn-primary" onclick="resetMaze();">Reset</button>
                 <button class="btn btn-primary" onclick="cleanMaze();">Clean</button>
                 <button id="visualizeButton" class="btn btn-primary" onclick="visualize();">Visualize</button>

@@ -505,6 +505,32 @@ class Maze {
         }
         return drawn;
     }
+    GBFSKillerPath() {
+        let dest = this.getOneDestinationCell(); // there is only one destination. for killer maze.
+        let row = dest.row;
+        let col = dest.col;
+        // wall from RHS.
+        for(let i = row-1; i <= row+1; i += 1) {
+            this.setCellState(this.maze[i][col+1], WALL);
+        }
+        this.setCellState(this.maze[row-1][col], WALL);
+        this.setCellState(this.maze[row+1][col], WALL);
 
+        for(let j = col-1; j >= 0; j -= 1) {
+            this.setCellState(this.maze[row-1][j], WALL);
+            this.setCellState(this.maze[row][j], EMPTY);
+            this.setCellState(this.maze[row+1][j], WALL);
+        }
+        for(let i = row-1; i > 2; i -= 1) {
+            this.setCellState(this.maze[i][0], EMPTY);
+            this.setCellState(this.maze[i][1], WALL);
+        }
+        for(let i = 0; i <= 2; i += 1) {
+            for(let j = 0; j <=2; j += 1) {
+                if(this.maze[i][j].state === SOURCE) continue;
+                this.setCellState(this.maze[i][j], EMPTY);
+            }
+        }
+    }
 }
 

@@ -264,3 +264,49 @@ function delayChange(value) {
     }
     userConfig.delay = delay;
 }
+
+// ##################################  Generate Killer Maze ###################################
+function generateBFSKiller() {
+    userConfig.resizeMaze(userConfig.mazeRows, userConfig.mazeCols);
+    generateMaze();
+}
+
+function generateDFSKiller() {
+    userConfig.source = {     // default source
+        row: 0,
+        col: 0
+    }
+    userConfig.destinationList = [{ // default destination
+        row: 0,
+        col: 2
+    }]
+    generateMaze();
+}
+
+function generateDijkstraKiller() {
+    userConfig.resizeMaze(userConfig.mazeRows, userConfig.mazeCols);
+    generateMaze();
+}
+
+function generateGBFSKiller() {
+    userConfig.source = {     // default source
+        row: 0,
+        col: 0
+    }
+    userConfig.destinationList = [{ // default destination
+        row: Math.floor(userConfig.mazeRows/2),
+        col: Math.floor(userConfig.mazeCols/2)
+    }]
+    if(userConfig.maze2 !== null) {
+        userConfig.generateMaze1();
+        userConfig.maze1.GBFSKillerPath();
+        userConfig.initAlgoObject(userConfig.maze1);
+        userConfig.generateMaze2(); // copy maze1 to 2.
+    } else {
+        userConfig.generateMaze1();
+        userConfig.maze1.GBFSKillerPath();
+        userConfig.initAlgoObject(userConfig.maze1);
+    }
+
+
+}
