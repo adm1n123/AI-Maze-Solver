@@ -41,7 +41,7 @@ class UserConfig {
         this.clickCol = -1;
 
         // wall probability
-        
+
         this.wallProb = .15 ;
         this.delay = 50;
     }
@@ -415,9 +415,3 @@ function alertIfUnreachable() {
         alert("Destination Unreachable !!!");
     }
 }
-
-
-
-
-
-//#############################################################################  TESTING METHODS DON'T REMOVE  #######################################################################
