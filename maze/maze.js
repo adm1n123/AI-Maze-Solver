@@ -6,23 +6,16 @@ class Maze {
 
         this.maze = [[]];
         this.isSearching = false;
-        this.isGenerating = false;
+
         this.wallProb = wallProb ;
         // all the paths will be stored in this.
         this.path = [];
         this.pathToDraw = [];
+        this.statistics = []; // list of objects.
     }
 
     getMazeID() {
         return this.mazeID;
-    }
-
-    getNumberOfRows() {
-
-    }
-
-    getNumberOfCols() {
-
     }
 
     getIsSearching() {
@@ -30,23 +23,8 @@ class Maze {
     }
 
     setIsSearching(bool) {
-        if (typeof bool === 'boolean') {
-            this.isSearching = bool;
-        } else {
-            alert("at set searching Invalid params");
-        }
+        this.isSearching = bool;
     }
-    getIsGenerating() {
-        return this.isGenerating;
-    }
-    setIsGenerating(bool) {
-        this.isGenerating = bool;
-    }
-
-    isVisited(cell) {
-        // return true false
-    }
-
 
     getSourceCell() {
         // return source cell.
@@ -72,10 +50,6 @@ class Maze {
 
     isSourceCell(cell) {
         return cell.state === SOURCE;
-    }
-
-    clearSourceCell() {
-        // remove the source class from cell
     }
 
     isDestinationCell(cell) {
@@ -140,16 +114,9 @@ class Maze {
         return true;
     }
 
-    clearDestinationCells() {
-        // clear all the destination cells
-    }
 
     hasSourceDestination() {
         return this.hasSourceCell() && this.hasDestinationCell();
-    }
-
-    getCellState(cell) {
-        // return cell value from grid
     }
 
     setCellState(cell, state) {
@@ -209,7 +176,6 @@ class Maze {
     cleanMaze() {
         // clear entire maze set each cell to EMPTY except source destinations.
         this.resetStatistics();
-        this.resetPathLength();
         this.initPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
@@ -230,7 +196,6 @@ class Maze {
     resetMaze() {
         // clear entire maze set each cell to EMPTY except source destination and wall.
         this.resetStatistics();
-        this.resetPathLength();
         this.initPath();
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
@@ -250,13 +215,6 @@ class Maze {
         this.setDestinationCells(userConfig.destinationList);
     }
 
-    clearPath() {
-        // clear the final path generated.
-    }
-
-    cellClick() {
-        alert("cell click");
-    }
 
     createTable() {
         let mazeDiv = document.getElementById(this.getMazeID());
@@ -271,12 +229,7 @@ class Maze {
                 let td = document.createElement('td');
 
                 td.id = `${this.getMazeID()}-${row}-${col}`;
-                // td.onclick = function (event) {
-                //     alert("click");
-                // };
-                td.style.width = '1px' ;
-                td.style.height = '1px' ;
-                
+
                 tr.appendChild(td);
             }
             tableBody.appendChild(tr);
@@ -360,19 +313,7 @@ class Maze {
             return this.getBidirectionalPath(source, destination);
         }
 
-        let destinations = Array.from(this.getDestinationCells());
-        let destination = null;
-        destinations.some(function (element, index) {
-            if (element.heuristics.state === CLOSED) {
-                destination = element;
-                return true;
-            }
-        });
-        // if destination is given then start finding path from that destination.
-        if (fromDestination !== null) {
-            destination = fromDestination;
-        }
-        let pathCell = destination.heuristics.parent;
+        let pathCell = fromDestination.heuristics.parent;
         let path = []; // don't include source and destination in path.
         while (pathCell !== null && pathCell.state !== SOURCE) {
             path.push(pathCell);
@@ -381,51 +322,6 @@ class Maze {
         path.reverse();
         return path;
     }
-
-    getNewStateCells() {
-
-          // return list of destination cells
-          let newStateCells = [];
-          for (let row = 0; row < this.rows; row += 1) {
-              for (let col = 0; col < this.cols; col += 1) {
-                  if (this.maze[row][col].heuristics.state === NEW) {
-                    newStateCells.push(this.maze[row][col]);
-                  }
-              }
-          }
-          return newStateCells;
-
-    }
-
-    getOpenStateCells() {
-
-        // return list of destination cells
-        let openStateCells = [];
-        for (let row = 0; row < this.rows; row += 1) {
-            for (let col = 0; col < this.cols; col += 1) {
-                if (this.maze[row][col].heuristics.state === OPEN) {
-                    openStateCells.push(this.maze[row][col]);
-                }
-            }
-        }
-        return openStateCells;
-
-  }
-
-    getClosedStateCells() {
-
-    // return list of destination cells
-    let closedStateCells = [];
-    for (let row = 0; row < this.rows; row += 1) {
-        for (let col = 0; col < this.cols; col += 1) {
-            if (this.maze[row][col].heuristics.state === CLOSED) {
-                closedStateCells.push(this.maze[row][col]);
-            }
-        }
-    }
-    return closedStateCells;
-
-}
 
     isPathDrawn() {
         for (let row = 0; row < this.rows; row += 1) {
@@ -439,46 +335,31 @@ class Maze {
     }
 
     setStatistics(){
-        
-        let newStateCells = this.getNewStateCells();
-        let notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
-        notVisitedCells.value = newStateCells.length ;
+        let stats = this.getCurrentStatistics();
 
-        let openStateCells = this.getOpenStateCells();
+        let notVisitedCells = document.getElementById("New Cells"+" "+this.mazeID);
+        notVisitedCells.value = stats.heuristics.NEW;
+
         let visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
-        visitedCells.value = openStateCells.length ;
+        visitedCells.value = stats.heuristics.OPEN;
 
-        let closedStateCells = this.getClosedStateCells();
         let exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
-        exploredCells.value = closedStateCells.length ;
-        
+        exploredCells.value = stats.heuristics.CLOSED;
+
     }
 
-    setPath(){
-        let path = this.getPath();
-        let pathLength = document.getElementById("Path Length"+" "+this.mazeID);
-        pathLength.value = path.length ;
-    }
 
     resetStatistics(){
+        this.resetPathStatistics();
 
-        let notVisitedCells = document.getElementById("Not Visited Cells"+" "+this.mazeID);
+        let notVisitedCells = document.getElementById("New Cells"+" "+this.mazeID);
         notVisitedCells.value = 0 ;
-
 
         let visitedCells = document.getElementById("Visited Cells"+" "+this.mazeID);
         visitedCells.value = 0 ;
 
-
         let exploredCells = document.getElementById("Explored Cells"+" "+this.mazeID);
         exploredCells.value = 0 ;
-        
-    }
-
-    resetPathLength(){
-
-        let pathLength = document.getElementById("Path Length"+" "+this.mazeID);
-        pathLength.value = 0 ;
     }
 
     initPath() {
@@ -486,9 +367,69 @@ class Maze {
         this.pathToDraw = [];
     }
 
+    getCurrentStatistics() {
+        let stats = {
+            heuristics: {
+                NEW: 0,
+                OPEN: 0,
+                CLOSED:0
+            },
+            EMPTY: 0,
+            VISITED: 0,
+            WALL: 0,
+            PATH_LENGTH:0
+        }
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
+                if (this.maze[row][col].state === WALL) {
+                    stats.WALL += 1;
+                    continue;
+                }
+                if (this.maze[row][col].heuristics.state === NEW) {
+                    stats.heuristics.NEW += 1;
+                } else if (this.maze[row][col].heuristics.state === OPEN) {
+                    stats.heuristics.OPEN += 1;
+                } else if (this.maze[row][col].heuristics.state === CLOSED) {
+                    stats.heuristics.CLOSED += 1;
+                }
+                if (this.maze[row][col].state === EMPTY) {
+                    stats.EMPTY += 1;
+                } else if (this.maze[row][col].state === VISITED) {
+                    stats.VISITED += 1;
+                }
+            }
+        }
+        return stats;
+    }
+
     addNewPath(path) {
         this.path.push(path);
         this.pathToDraw.push(path);
+        let stats = this.getCurrentStatistics();
+        stats.PATH_LENGTH = path.length;
+        this.statistics.push(stats);
+        this.setPathStatistics();
+    }
+
+    getPathStatistics(pathNumber, stats) {
+        let html = "";
+        html += "<span> Path "+pathNumber+" Length: "+stats.PATH_LENGTH+" New: "+stats.heuristics.NEW+
+            " Visited: "+stats.heuristics.OPEN+" Explored: "+stats.heuristics.CLOSED+"</span><br>";
+        return html;
+    }
+
+    setPathStatistics() {
+        let div = document.getElementById(this.mazeID+"stats");
+        let html = "";
+        for (let i = 0; i < this.statistics.length; i += 1) {
+            html += this.getPathStatistics(i+1, this.statistics[i]);
+        }
+        div.innerHTML = html;
+    }
+
+    resetPathStatistics() {
+        document.getElementById(this.mazeID+"stats").innerHTML = '';
+        this.statistics = [];
     }
 
     drawOnePathCell() { // make one cell of each path green.
@@ -505,6 +446,7 @@ class Maze {
         }
         return drawn;
     }
+
     GBFSKillerPath() {
         let dest = this.getOneDestinationCell(); // there is only one destination. for killer maze.
         let row = dest.row;

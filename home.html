@@ -79,7 +79,7 @@
 
         <div class="row">
             <div class="col-6">
-                <span>Maze 1</span>
+<!--                <span>Maze 1</span>-->
                 <select id="selectMaze1" name="" onmousedown="this.value='';"
                     onchange="selectAlgo('maze1', this.value);">
                     <option value=''>select algo</option>
@@ -96,30 +96,21 @@
                 </select>
                 
                 <span><b>Statistics</b> &nbsp</span>
-                <label for="Open">Not Visited Cells</label>
-                <input type="number" id="Not Visited Cells maze1" name="Not Visited Cells" readonly value="0" style="width: 90px;" min="0">
+                <label for="Open">New</label>
+                <input type="number" id="New Cells maze1" name="Not Visited Cells" readonly value="0" style="width: 90px;" min="0">
         
-                <label for="Open">Visited Cells</label>
+                <label for="Open">Visited</label>
                 <input type="number" id="Visited Cells maze1" name="Visited Cells" readonly value="0"  style="width: 90px;" min="0">
         
-                <label for="Open">Explored Cells</label>
+                <label for="Open">Explored</label>
                 <input type="number" id="Explored Cells maze1" name="Explored Cells" readonly value="0"  style="width: 90px;" min="0">
 
-                <label for="Open">Path Length</label>
-                <input type="number" id="Path Length maze1" name="Path Length" readonly value="0" style="width: 90px;" min="0">
-                    
-                    
-                    
+                <div id="maze1stats"></div>
                 <div id="maze1"></div>
-
-
-            
         </div>
 
-
-
         <div class="col-6">
-            <span>Maze 2</span>
+<!--            <span>Maze 2</span>-->
             <select id="selectMaze2" name="" onmousedown="this.value='';" onchange="selectAlgo('maze2', this.value);">
                 <option value=''>select algo</option>
                 <option value='A*+M' selected>A* Manhattan</option>
@@ -135,18 +126,16 @@
             </select>
 
             <span><b>Statistics</b> &nbsp</span>
-            <label for="Open">Not Visited Cells</label>
-            <input type="number" id="Not Visited Cells maze2" name="Not Visited Cells" readonly value="0" style="width: 90px;" min="0">
+            <label for="Open">New</label>
+            <input type="number" id="New Cells maze2" name="Not Visited Cells" readonly value="0" style="width: 90px;" min="0">
     
-            <label for="Open">Visited Cells</label>
+            <label for="Open">Visited</label>
             <input type="number" id="Visited Cells maze2" name="Visited Cells" readonly value="0"  style="width: 90px;" min="0">
     
-            <label for="Open">Explored Cells</label>
+            <label for="Open">Explored</label>
             <input type="number" id="Explored Cells maze2" name="Explored Cells" readonly value="0"  style="width: 90px;" min="0">
 
-            <label for="Open">Path Length</label>
-            <input type="number" id="Path Length maze2" name="Path Length" readonly value="0" style="width: 90px;" min="0">
-
+            <div id="maze2stats"></div>
             <div id="maze2"></div>
         </div>
 

@@ -70,7 +70,6 @@ class UserConfig {
         }
         this.maze1 = new Maze(this.maze1ID, this.mazeRows, this.mazeCols, this.wallProb);
         this.maze1.resetStatistics();
-        this.maze1.resetPathLength();
         this.maze1.createMaze();
         this.maze1.generateWalls();
         this.maze1.setSourceCell(this.source);
@@ -92,7 +91,6 @@ class UserConfig {
         }
         this.maze2 = new Maze(this.maze2ID, this.mazeRows, this.mazeCols, this.wallProb);
         this.maze2.resetStatistics();
-        this.maze2.resetPathLength();
         this.maze1.copyMaze(this.maze2);   // copy all the maze1 states to maze2. make sure maze1 is clean.
         this.initAlgoObject(this.maze2);
     }
@@ -100,7 +98,6 @@ class UserConfig {
     removeMaze2() {
         if (this.maze2 !== null) {
             this.maze2.resetStatistics();
-            this.maze2.resetPathLength();
             this.maze2 = null;
         }
         let maze2Div = document.getElementById(this.maze2ID);
@@ -196,6 +193,7 @@ function generateMaze() {
         userConfig.generateMaze1();
     }
     setVisualizeButton();
+    window.scrollBy(0, 2000);
     userConfig.isRunning = false;
 }
 
@@ -290,10 +288,6 @@ async function visualize() {
             await sleep(userConfig.delay);
         }
 
-        if (userConfig.maze1.getIsSearching() === false) {
-            userConfig.maze1.setPath();
-        }
-
         alertIfUnreachable();
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
@@ -321,16 +315,6 @@ async function visualize() {
         }
         while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) { // draw in any one
             await sleep(userConfig.delay);
-        }
-
-        /*
-        TODO: set path length for each path.
-         */
-        if (userConfig.maze1.getIsSearching() === false) {
-            userConfig.maze1.setPath();
-        }
-        if (userConfig.maze2.getIsSearching() === false) {
-            userConfig.maze2.setPath();
         }
 
         alertIfUnreachable();
@@ -365,10 +349,6 @@ async function oneStep() {
             await sleep(userConfig.delay);
         }
 
-        if (userConfig.maze1.getIsSearching() === false) {
-            userConfig.maze1.setPath();
-        }
-
         alertIfUnreachable();
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
@@ -388,13 +368,6 @@ async function oneStep() {
         }
         while(userConfig.maze1.drawOnePathCell() === true || userConfig.maze2.drawOnePathCell() === true) { // draw in any one
             await sleep(userConfig.delay);
-        }
-
-        if (userConfig.maze1.getIsSearching() === false) {
-            userConfig.maze1.setPath();
-        }
-        if (userConfig.maze2.getIsSearching() === false) {
-            userConfig.maze2.setPath();
         }
 
         alertIfUnreachable();
