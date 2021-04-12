@@ -101,26 +101,28 @@ html {
 /*-------------------------------------------------------*/
 /* VISUALIZER Maze SETUP */
 /*-------------------------------------------------------*/
-td {
-    min-width: 20px;
-    height: 20px;
-    border-right: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    background-color: white;
-    transition: background-color 0.5s, transform 0.5ss, border-radius 0.5ss;
-}
+
+/*td {*/
+/*    max-width: 20px;*/
+/*    padding: 0;*/
+/*    max-height: 5px;*/
+/*    height: 5px;*/
+/*    border-right: 1px solid lightgray;*/
+/*    border-bottom: 1px solid lightgray;*/
+/*    background-color: white;*/
+/*    transition: background-color 0.5s, transform 0.5ss, border-radius 0.5ss;*/
+/*}*/
 
 table {
     min-width: 1px;
     min-height: 1px;
     width: 1px;
     height: 1px;
-    width: 100%;
     display: block;
     border-collapse: separate;
-    border-spacing: 0px;
-    position: fixed;
-    *border-collapse: expression('separate', cellSpacing = '1px');
+    /*border-spacing: 0px;*/
+    position: relative;
+    /**border-collapse: expression('separate', cellSpacing = '1px');*/
 }
 
 /*-------Classes--------*/
@@ -175,7 +177,50 @@ table {
     height: 50px;
     width: 150px;
 }
-/*.button {*/
-/*    height: 50px;*/
-/*    width: 150px;*/
-/*}*/
+#delay {
+    background-color: #c3d2d7;
+    color: #001a6d;
+}
+.statsinput {
+    width: 55px;
+    /*height: 20px;*/
+    background-color: rgb(189, 222, 255);
+    border-color: #0039f8;
+    color: #001a6d;
+}
+
+.toolbar {
+    /*background-color: rgba(51, 127, 223, 0.66);*/
+}
+#brand {
+    font-family: 'Train One';
+    /*color: rgb(60, 155, 255);*/
+    /*color: #5073b8;*/
+    font-weight: bold;
+    display: inline;
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+.btn {
+    color: #5073b8;
+    background-color: #e1ad87;
+    border-color: red;
+}
+.btn:hover {
+    background-color: #e17a30;
+
+}
+.btn:active {
+    background-color: #e17a30;
+}
+.btn:active:focus {
+    background-color: #e17a30;
+}
+.btn:focus {
+    background-color: #e17a30;
+}
+/*********************************************************  Custom Select Menu *********************************/
+select {
+    background-color: #c3d2d7;
+    color: #001a6d;
+}

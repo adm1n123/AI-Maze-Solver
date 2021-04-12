@@ -235,6 +235,11 @@ class Maze {
         table.appendChild(tableBody);
         mazeDiv.appendChild(table);
 
+        // for (let i = 0; i < 35; i+=1) {
+        //     let br = document.createElement('br');
+        //     mazeDiv.appendChild(br);
+        // }
+
         if (this.getMazeID() === userConfig.maze1ID) {
             document.getElementsByTagName('table')[0].addEventListener('click', mazeClick, false);
         } else if (this.getMazeID() === userConfig.maze2ID) {
