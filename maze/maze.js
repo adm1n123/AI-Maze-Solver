@@ -43,8 +43,6 @@ class Maze {
     }
 
     setSourceCell(source) {
-        // set source cell.
-        this.maze[source.row][source.col].state = SOURCE;
         this.setCellState(this.maze[source.row][source.col], SOURCE);
     }
 

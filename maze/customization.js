@@ -70,14 +70,16 @@ function setSource() {
     let col = userConfig.clickCol;
     if (userConfig.maze1 !== null) {
         let source = userConfig.maze1.getSourceCell();
-        userConfig.maze1.setCellState(source, EMPTY);
+        if (source !== null)
+            userConfig.maze1.setCellState(source, EMPTY);
         let newSourceCell = userConfig.maze1.maze[row][col];
         userConfig.maze1.setSourceCell(newSourceCell);
         userConfig.initAlgoObject(userConfig.maze1);
     }
     if (userConfig.maze2 !== null) {
         let source = userConfig.maze2.getSourceCell();
-        userConfig.maze2.setCellState(source, EMPTY);
+        if (source !== null)
+            userConfig.maze2.setCellState(source, EMPTY);
         let newSourceCell = userConfig.maze2.maze[row][col];
         userConfig.maze2.setSourceCell(newSourceCell);
         userConfig.initAlgoObject(userConfig.maze2);
