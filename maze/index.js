@@ -193,7 +193,6 @@ function generateMaze() {
         userConfig.generateMaze1();
     }
     setVisualizeButton();
-    window.scrollBy(0, 2000);
     userConfig.isRunning = false;
 }
 
