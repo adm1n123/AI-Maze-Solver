@@ -138,13 +138,22 @@ table {
     height: 30px;
     border-right: 3px solid lightgray;
     border-bottom: 3px solid lightgray;
-    background-color: #8ccfcf;
+    background-color: rgba(169, 213, 159, 0.46);
     transition: background-color 0.5s, transform 0.5ss, border-radius 0.5ss;
 }
 .table-path tr {
     height: auto;
     /*display: block;*/
     /*position: relative;*/
+}
+.pathStatsNew {
+    background: #f1f7f7 !important;
+}
+.pathStatsVisited {
+    background-color: #8ccfcf !important;
+}
+.pathStatsExplored {
+    background-color: #919191 !important;
 }
 /*-------Classes--------*/
 

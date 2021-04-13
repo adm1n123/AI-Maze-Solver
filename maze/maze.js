@@ -420,7 +420,7 @@ class Maze {
     getPathStatistics(pathNumber, stats) {
         let html = "";
         html += "<tr><td id='"+pathNumber+"'><b>Destination"+pathNumber+"</b> at ["+(stats.destination.row+1)+", "+(stats.destination.col+1)+"]</td><td> Path Length: <b>"+
-            stats.PATH_LENGTH+"</b></td><td> New: <b>"+stats.heuristics.NEW+"</b></td><td> Visited: <b>"+stats.heuristics.OPEN+"</b></td><td> Explored: <b>"+stats.heuristics.CLOSED+"</b></td></tr>";
+            stats.PATH_LENGTH+"</b></td><td class='pathStatsNew'> New: <b>"+stats.heuristics.NEW+"</b></td><td class='pathStatsVisited'> Visited: <b>"+stats.heuristics.OPEN+"</b></td><td class='pathStatsExplored'> Explored: <b>"+stats.heuristics.CLOSED+"</b></td></tr>";
         return html;
     }
 
