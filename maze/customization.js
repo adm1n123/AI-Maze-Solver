@@ -199,8 +199,32 @@ function selectAlgo(maze, value) {
 
 // #################################### Select size ###################################
 
+function setMazeSize(maze) {
+    let rows = null;
+    let cols = null;
 
-function selectSize(value) {
+    let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 0;
+    let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+
+    let div = document.getElementById('maze1');
+    let divRect = div.getBoundingClientRect();
+
+    let cell1Rect = document.getElementById(userConfig.maze1ID+"-1-1").getBoundingClientRect();
+    let cell2Rect = document.getElementById(userConfig.maze1ID+"-2-2").getBoundingClientRect();
+    let cellHeight = cell2Rect.y - cell1Rect.y;
+    let cellWidth = cell2Rect.x - cell1Rect.x;
+
+    rows = Math.floor((height-divRect.y)/cellHeight);
+    cols = Math.floor((width-2*divRect.x)/cellWidth);
+
+    if (maze === 'one')
+        userConfig.resizeMaze(rows, cols);
+    else
+        userConfig.resizeMaze(rows, Math.floor(cols/2));
+
+}
+
+function selectMazeSize(value) {
     if (userConfig.isRunning === true) {    // user can only change size if algorithm is not running.
         if (userConfig.maze1 !== null || userConfig.maze2 !== null) {
             document.getElementById("selectMazeSize").selectedIndex = 0;
@@ -208,16 +232,22 @@ function selectSize(value) {
         alert("!!! Algorithm is running, Set maze size before visualization !!!");
         return;
     }
+
     let size = Number.parseInt(value);
     if (userConfig.maze2 === null) {
-        userConfig.resizeMaze(size, Math.floor(size * 2));
+        if(value === 'auto')
+            setMazeSize('one');
+        else
+            userConfig.resizeMaze(size, Math.floor(size * 2));
         userConfig.generateMaze1();
     } else {
-        userConfig.resizeMaze(size, size);
+        if(value === 'auto')
+            setMazeSize('two');
+        else
+            userConfig.resizeMaze(size, size);
         userConfig.generateMaze1();
         userConfig.generateMaze2();
     }
-
 
 }
 

@@ -4,7 +4,8 @@ let userConfig = null;
 
 $( document ).ready(function () {
     userConfig = new UserConfig();   // initialized the userConfig.
-    generateMaze();     // make sure at least one maze is already generated when page loads.
+    generateMaze(); // make sure at least one maze is already generated when page loads.
+    selectMazeSize('auto');
 });
 
 class UserConfig {
@@ -22,8 +23,8 @@ class UserConfig {
             object: null
         }
 
-        this.mazeRows = 20; // default
-        this.mazeCols = 40; // default since single maze is present.
+        this.mazeRows = 15; // default
+        this.mazeCols = 30; // default since single maze is present.
         this.source = {     // default source
             row: 0,
             col: 0
@@ -163,26 +164,24 @@ function isSourceDestinationSet() {
 }
 
 function createMaze() {
+
     let mazeCountButton = document.getElementById("mazeCountButton");
     if (mazeCountButton.value === 'one') {
-        userConfig.resizeMaze(20, 40);
+        setMazeSize('one');
         userConfig.removeMaze2();
         userConfig.generateMaze1();
-        userConfig.maze1.setIsSearching(false);
         mazeCountButton.innerHTML = 'Double Maze';
         mazeCountButton.value = 'two';
     } else {
-        userConfig.resizeMaze(20, 20);
+        setMazeSize('two');
         userConfig.generateMaze1();
         userConfig.generateMaze2();
-        userConfig.maze1.setIsSearching(false);
-        userConfig.maze2.setIsSearching(false);
         mazeCountButton.innerHTML = 'Single Maze';
         mazeCountButton.value = 'one';
     }
     setVisualizeButton();
     userConfig.isRunning = false;
-    document.getElementById("selectMazeSize").selectedIndex = 0;
+    document.getElementById("selectMazeSize").selectedIndex = 1;
 }
 
 function generateMaze() {
@@ -197,6 +196,7 @@ function generateMaze() {
 }
 
 function resetMaze() {
+
     if (userConfig.maze2 !== null) {    // maze2 is present.
         userConfig.maze1.resetMaze();
         userConfig.initAlgoObject(userConfig.maze1);

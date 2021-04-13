@@ -53,13 +53,14 @@
                 <button id="mazeCountButton" class="btn btn-danger btn-sm" value="two" onclick="createMaze();">Double Maze</button>
 
 
-                <select id="selectMazeSize" name="Size" onmousedown="this.value='';" onchange="selectSize(this.value);">
+                <select id="selectMazeSize" name="Size" onmousedown="this.value='';" onchange="selectMazeSize(this.value);">
                     <option value=''>select size</option>
-                    <option value='25'>Size 25 rows</option>
-                    <option value='20' selected>Size 20 rows</option>
-                    <option value='15'>Size 15 rows</option>
-                    <option value='10'>Size 10 rows</option>
-                    <option value='3'>Size 3 rows</option>
+                    <option value='auto' selected>Size: Auto</option>
+                    <option value='25'>Size: 25 rows</option>
+                    <option value='20'>Size: 20 rows</option>
+                    <option value='15'>Size: 15 rows</option>
+                    <option value='10'>Size: 10 rows</option>
+                    <option value='3'>Size: 3 rows</option>
                 </select>
 
 
@@ -73,12 +74,11 @@
                 </select>
 
                 <label for="delay">Delay</label>
-                <input type="number" id="delay" name="delay" value="50" style="width: 70px;" min="0" max="10000" onchange="delayChange(this.value);">
+                <input type="number" id="delay" name="delay" value="50" style="width: 60px;" min="0" max="10000" onchange="delayChange(this.value);">
             </div>
         </div>
         <div class="row toolbar">
             <div class="col-6">
-                <!--                <span>Maze 1</span>-->
                 <select id="selectMaze1" name="" onmousedown="this.value='';"
                         onchange="selectAlgo('maze1', this.value);">
                     <option value=''>select algo</option>
@@ -104,7 +104,8 @@
                 <label for="Open">Explored</label>
                 <input type="number" class="statsinput" id="Explored Cells maze1" name="Explored Cells" readonly value="0"  min="0">
 
-                <div id="maze1stats"></div>
+                <div id="maze1stats" class="pathStatsDiv"></div>
+
             </div>
 
             <div class="col-6">
@@ -133,7 +134,7 @@
                 <label for="Open">Explored</label>
                 <input type="number" class="statsinput" id="Explored Cells maze2" name="Explored Cells" readonly value="0" min="0">
 
-                <div id="maze2stats"></div>
+                <div id="maze2stats" class="pathStatsDiv"></div>
             </div>
         </div>
 

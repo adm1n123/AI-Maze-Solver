@@ -102,16 +102,16 @@ html {
 /* VISUALIZER Maze SETUP */
 /*-------------------------------------------------------*/
 
-/*td {*/
-/*    max-width: 20px;*/
-/*    padding: 0;*/
-/*    max-height: 5px;*/
-/*    height: 5px;*/
-/*    border-right: 1px solid lightgray;*/
-/*    border-bottom: 1px solid lightgray;*/
-/*    background-color: white;*/
-/*    transition: background-color 0.5s, transform 0.5ss, border-radius 0.5ss;*/
-/*}*/
+td {
+    max-width: 30px;
+    padding: 0;
+    max-height: 5px;
+    height: 30px;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    background-color: white;
+    transition: background-color 0.5s, transform 0.5ss, border-radius 0.5ss;
+}
 
 table {
     min-width: 1px;
@@ -120,11 +120,32 @@ table {
     height: 1px;
     display: block;
     border-collapse: separate;
-    /*border-spacing: 0px;*/
+    border-spacing: 0px;
     position: relative;
+    /*border-style: dashed;*/
+    /*border-color: red;*/
     /**border-collapse: expression('separate', cellSpacing = '1px');*/
 }
-
+.table-path {
+    background-color: #8ccfcf;
+    position: relative;
+}
+.table-path td {
+    max-width: none;
+    padding:0px;
+    margin:0px;
+    max-height: none;
+    height: 30px;
+    border-right: 3px solid lightgray;
+    border-bottom: 3px solid lightgray;
+    background-color: #8ccfcf;
+    transition: background-color 0.5s, transform 0.5ss, border-radius 0.5ss;
+}
+.table-path tr {
+    height: auto;
+    /*display: block;*/
+    /*position: relative;*/
+}
 /*-------Classes--------*/
 
 
@@ -187,6 +208,13 @@ table {
     background-color: rgb(189, 222, 255);
     border-color: #0039f8;
     color: #001a6d;
+}
+.pathStatsDiv {
+    display:block;
+    /*width:100%;*/
+    height:auto;
+    /*background-color:#475;*/
+    /*overflow:scroll;*/
 }
 
 .toolbar {

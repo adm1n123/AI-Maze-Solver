@@ -79,8 +79,7 @@ class Bidirectional {
                     self.cellFromSource = current;
                     self.cellFromDestination = element;
                     mazeObject.setIsSearching(false);
-                    let path = mazeObject.getPath();
-                    mazeObject.addNewPath(path);
+                    mazeObject.addNewPath(element);
                     self.isAlgoOver = true;
                     return true;
                 }

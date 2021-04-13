@@ -220,6 +220,7 @@ class Maze {
         let table = document.createElement('table');
         table.classList.add('table');
         table.classList.add('table-bordered');
+        table.classList.add('maze-table');
         let tableBody = document.createElement('tbody');
         for (let row = 0; row < this.rows; row += 1) {
             let tr = document.createElement('tr');
@@ -405,33 +406,51 @@ class Maze {
         return stats;
     }
 
-    addNewPath(path) {
+    addNewPath(destination) {
+        let path = this.getPath(destination);
         this.path.push(path);
         this.pathToDraw.push(path);
         let stats = this.getCurrentStatistics();
         stats.PATH_LENGTH = path.length;
+        stats.destination = destination;
         this.statistics.push(stats);
         this.setPathStatistics();
     }
 
     getPathStatistics(pathNumber, stats) {
         let html = "";
-        html += "<span> Path "+pathNumber+" Length: "+stats.PATH_LENGTH+" New: "+stats.heuristics.NEW+
-            " Visited: "+stats.heuristics.OPEN+" Explored: "+stats.heuristics.CLOSED+"</span><br>";
+        html += "<tr><td id='"+pathNumber+"'><b>Destination"+pathNumber+"</b> at ["+(stats.destination.row+1)+", "+(stats.destination.col+1)+"]</td><td> Path Length: <b>"+
+            stats.PATH_LENGTH+"</b></td><td> New: <b>"+stats.heuristics.NEW+"</b></td><td> Visited: <b>"+stats.heuristics.OPEN+"</b></td><td> Explored: <b>"+stats.heuristics.CLOSED+"</b></td></tr>";
         return html;
     }
 
     setPathStatistics() {
         let div = document.getElementById(this.mazeID+"stats");
-        let html = "";
+        let html = "<table class='table table-bordered table-path'>";
+        let count = 0;
         for (let i = 0; i < this.statistics.length; i += 1) {
             html += this.getPathStatistics(i+1, this.statistics[i]);
+            count += 1;
         }
+
+        html += "</table>";
         div.innerHTML = html;
+
+        let cell1Rect = document.getElementById(userConfig.maze1ID+"-1-1").getBoundingClientRect();
+        let cell2Rect = document.getElementById(userConfig.maze1ID+"-2-2").getBoundingClientRect();
+        let cellHeight = cell2Rect.y - cell1Rect.y;
+        let cellWidth = cell2Rect.x - cell1Rect.x;
+        let divHeight = Math.ceil((cellHeight+2) * count); // path stats cell border is 3px but maze cell border is 1px. so 3-1 = 2 extra per cell.
+
+        div.style.height = divHeight+"px";
+
+        // div.innerHTML = "ksdjfksdfj<br>fdskfjsldfj<br>skdfsdfjlksd";
     }
 
     resetPathStatistics() {
-        document.getElementById(this.mazeID+"stats").innerHTML = '';
+        let div = document.getElementById(this.mazeID+"stats");
+        div.innerHTML = '';
+        div.style.height = "0px";
         this.statistics = [];
     }
 

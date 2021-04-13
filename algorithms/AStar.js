@@ -64,8 +64,7 @@ class AStar {
                     if (mazeObject.isDestinationCell(element) === false) {  // don't change color of destination.
                         mazeObject.setCellState(element, OPEN);
                     } else {    // process destination.
-                        let path = mazeObject.getPath(element);
-                        mazeObject.addNewPath(path);
+                        mazeObject.addNewPath(element);
                         self.initHeuristicsForNextDestination(mazeObject);
                         if (mazeObject.isAllDestinationsReached() === true) {
                             self.isAlgoOver = true;

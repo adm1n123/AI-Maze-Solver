@@ -72,8 +72,7 @@ class GBFS {
                     if (mazeObject.isDestinationCell(element) === false) {  // don't change color of destination.
                         mazeObject.setCellState(element, OPEN);
                     } else {    // process destination.
-                        let path = mazeObject.getPath(element);
-                        mazeObject.addNewPath(path);
+                        mazeObject.addNewPath(element);
                         self.initHeuristicsForNextDestination(mazeObject);  // this is reached init for next closer destination.
                         if (mazeObject.isAllDestinationsReached() === true) {
                             self.isAlgoOver = true;
