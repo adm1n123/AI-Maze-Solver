@@ -10,3 +10,9 @@
 ### - go to directory AI-Maze-Solver
 ### - open index.html in google chrome or microsoft edge.
 ### Alternate: import AI-Maze-Solver in WebStorm IDE as Node.js project and run project.
+
+
+<br>
+<br>
+
+#### Github repository: [https://github.com/adm1n123/AI-Maze-Solver](https://github.com/adm1n123/AI-Maze-Solver)
